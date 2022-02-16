@@ -232,7 +232,24 @@ export const shouldSkipBranchLint = (branch: string, additionalIgnorePattern?: s
 export const shouldUpdatePRDescription = (
   /** The PR description/body as a string. */
   body?: string
-): boolean => typeof body === 'string' && !MARKER_REGEX.test(body);
+): boolean => {
+  if (typeof body === 'string' && body != null && body !== undefined) {
+    // Check if the body contains the hidden marker and return false
+    // (i.e. don't update the PR description) if it's found.
+    const foundMarker = MARKER_REGEX.test(body);
+
+    if (foundMarker) {
+      console.log('Marker found, PR description will not be updated.');
+    } else {
+      console.log('Marker not found, PR description will updated.');
+    }
+
+    return !foundMarker;
+  }
+
+  // Return true to update the PR description by default.
+  return true;
+};
 
 /**
  * Get links to labels & remove spacing so the table works.
@@ -246,7 +263,7 @@ export const getLabelsForDisplay = (labels: JIRADetails['labels']): string => {
 };
 
 /** Get PR description with story/issue details. */
-export const getPRDescription = (body = '', details: JIRADetails): string => {
+export const getPRDescription = (body: string, details: JIRADetails): string => {
   const displayKey = details.key.toUpperCase();
 
   let description = `

@@ -147,6 +147,8 @@ async function run(): Promise<void> {
       });
 
       if (shouldUpdatePRDescription(prBody)) {
+        console.log('Updating PR description…');
+
         const prData: PullsUpdateParams = {
           owner,
           repo,
@@ -175,6 +177,8 @@ async function run(): Promise<void> {
             addComment(client, hugePrComment);
           }
         }
+      } else {
+        console.log('PR description will not be updated.');
       }
 
       if (!isIssueStatusValid(VALIDATE_ISSUE_STATUS, ALLOWED_ISSUE_STATUSES.split(','), details)) {
@@ -187,6 +191,8 @@ async function run(): Promise<void> {
 
         core.setFailed('The found jira issue does is not in acceptable statuses');
         process.exit(1);
+      } else {
+        console.log('The issue status is valid.');
       }
     } else {
       const comment: IssuesCreateCommentParams = {
