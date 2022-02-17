@@ -249,7 +249,7 @@ export const getLabelsForDisplay = (labels: JIRADetails['labels']): string => {
 export const getPRDescription = (body = '', details: JIRADetails): string => {
   const displayKey = details.key.toUpperCase();
 
-  return `
+  let description = `
 <details open>
   <summary><a href="${details.url}" title="${displayKey}" target="_blank">${displayKey}</a></summary>
   <br />
@@ -282,11 +282,16 @@ export const getPRDescription = (body = '', details: JIRADetails): string => {
 <!--
   do not remove this marker as it will break jira-lint's functionality.
   ${HIDDEN_MARKER}
--->
+-->`;
 
+  if (body !== undefined && body !== null && body.trim() !== '') {
+    description += `
 ---
 
 ${body}`;
+  }
+
+  return description;
 };
 
 /** Check if a PR is considered "huge". */
