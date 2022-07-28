@@ -72,6 +72,8 @@ async function run(): Promise<void> {
       throw new Error(`Missing 'repository' from github action context.`);
     }
 
+    console.log(pullRequest);
+
     const {
       name: repo,
       owner: { login: owner },
@@ -147,7 +149,7 @@ async function run(): Promise<void> {
       });
 
       if (shouldUpdatePRDescription(prBody)) {
-        console.log('Updating PR description…');
+        console.log('Updating PR description…', prBody);
 
         const prData: PullsUpdateParams = {
           owner,
