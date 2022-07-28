@@ -92,7 +92,7 @@ describe('shouldUpdatePRDescription()', () => {
   </table>
 </details>
 <!--
-  do not remove this marker as it will break jira-lint's functionality.
+  do not remove this marker as it will break jira-linter's functionality.
   ${HIDDEN_MARKER}
 -->
 
