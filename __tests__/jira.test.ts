@@ -131,7 +131,7 @@ describe('isIssueStatusValid()', () => {
 
 describe('getInvalidIssueStatusComment()', () => {
   it('should return content with the passed in issue status and allowed statses', () => {
-    expect(Jira.getInvalidIssueStatusComment('Assessment', 'In Progress')).toContain('Assessment');
-    expect(Jira.getInvalidIssueStatusComment('Assessment', 'In Progress')).toContain('In Progress');
+    expect(Jira.getInvalidIssueStatusComment('Assessment', ['In Progress'])).toContain('Assessment');
+    expect(Jira.getInvalidIssueStatusComment('Assessment', ['In Progress'])).toContain('In Progress');
   });
 });
