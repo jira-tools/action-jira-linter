@@ -49,7 +49,7 @@ export interface Label {
 }
 
 export interface UpdateLabelParams extends UpdateIssueParams {
-  labels: Label[];
+  labels: string[];
 }
 
 // eslint-disable-next-line no-shadow
