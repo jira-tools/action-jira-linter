@@ -1,18 +1,17 @@
-# jira-lint 🧹
+# jira-linter 🧹
 
-> A light-weight lint workflow when using GitHub along with [Jira][jira] for
-> project management. Ported from [pivotal-lint] for similar usage with
-> Atlassian's Jira Software.
+> A light-weight lint workflow to unite the worlds of GitHub and [Jira][jira].
+> Based on the fine work of [ClearTax][cleartax] on [jira-linter].
 
 ![GitHub package.json version][package-version]
 [![License][license-badge]][license]
-[![All Contributors][all-contributors]](#contributors)
+[![All Contributors][all-contributors-badge]](#contributors)
 ![test][test-badge]
 ---
 
 <!-- toc -->
 
-- [jira-lint 🧹](#jira-lint-)
+- [jira-linter 🧹](#jira-linter-)
   - [!test](#test)
   - [Installation](#installation)
     - [Semantic Versions](#semantic-versions)
@@ -34,18 +33,19 @@
 
 ## Installation
 
-To make `jira-lint` a part of your workflow, just add a `jira-lint.yml` file in your `.github/workflows/` directory in your GitHub repository.
+To make `jira-linter` a part of your workflow, just add a `jira-linter.yml` file
+in your `.github/workflows/` directory in your GitHub repository.
 
 ```yml
-name: jira-lint
+name: jira-linter
 on: [pull_request]
 
 jobs:
-  jira-lint:
+  jira-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: cleartax/jira-lint@master
-        name: jira-lint
+      - uses: btwrk/jira-linter@main
+        name: jira-linter
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           jira-token: ${{ secrets.JIRA_TOKEN }}
@@ -56,20 +56,21 @@ jobs:
           fail-on-error: false
 ```
 
-It can also be used as part of an existing workflow by adding it as a step. More information about the [options here](#options).
+It can also be used as part of an existing workflow by adding it as a step. More
+information about the [options here](#options).
 
 ### Semantic Versions
 
-If you want more stability in versions of `jira-lint` than `@master` you can
-also use the [semantic releases for jira-lint][releases].
+If you want more stability in versions of `jira-linter` than `@master` you can
+also use the [semantic releases for jira-linter][releases].
 
 Example:
 
 ```yaml
 # ...
 steps:
-  - uses: cleartax/jira-lint@v0.1.0
-    name: jira-lint
+  - uses: btwrk/jira-linter@v0.1.0
+    name: jira-linter
     # ...
 ```
 
@@ -77,7 +78,7 @@ steps:
 
 ### PR Status Checks
 
-`jira-lint` adds a status check which helps you avoid merging PRs which are
+`jira-linter` adds a status check which helps you avoid merging PRs which are
 missing a valid Jira Issue Key in the branch name. It will use the [Jira
 API][jira-api] to validate a given key.
 
@@ -85,13 +86,13 @@ API][jira-api] to validate a given key.
 
 #### Description
 
-When a PR passes the above check, `jira-lint` will also add the issue details to
+When a PR passes the above check, `jira-linter` will also add the issue details to
 the top of the PR description. It will pick details such as the Issue summary,
 type, estimation points, status and labels and add them to the PR description.
 
 #### Labels
 
-`jira-lint` will automatically label PRs with:
+`jira-linter` will automatically label PRs with:
 
 - A label based on the Jira Project name (the project the issue belongs to). For
   example, if your project name is `Escher` then it will add `escher` as a
@@ -101,7 +102,7 @@ type, estimation points, status and labels and add them to the PR description.
 - Jira issue type ([based on your project][issue-types]).
 
 <figure>
- <img src="https://assets1.cleartax-cdn.com/cleargst-frontend/misc/1580891341_jira_lint.png" alt="Issue details and labels added to a PR" />
+ <img src="https://user-images.githubusercontent.com/12283/181632952-ca6e0b3a-7192-4bbf-a5cc-ba90333cf7ab.png" alt="Issue details and labels added to a PR" />
  <figcaption>
  Issue details and labels added to a PR.
  </figcaption>
@@ -116,9 +117,9 @@ In some cases, one may be pushing changes for a story that is set to `Done`/`Com
 
 The following flags can be used to validate issue status:
 - `validate-issue-status`
-  - If set to `true`, `jira-lint` will validate the issue status based on `allowed-issue-statuses`
+  - If set to `true`, `jira-linter` will validate the issue status based on `allowed-issue-statuses`
 - `allowed-issue-statuses`
-  - This will only be used when `validate-issue-status` is `true`. This should be a comma separated list of statuses. If the detected issue's status is not in one of the `allowed-issue-statuses` then `jira-lint` will fail the status check.
+  - This will only be used when `validate-issue-status` is `true`. This should be a comma separated list of statuses. If the detected issue's status is not in one of the `allowed-issue-statuses` then `jira-linter` will fail the status check.
 
 **Example of invalid status**
   <p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>
@@ -138,7 +139,7 @@ The following flags can be used to validate issue status:
 
 #### Soft-validations via comments
 
-`jira-lint` will add comments to a PR to encourage better PR practices:
+`jira-linter` will add comments to a PR to encourage better PR practices:
 
 **A good PR title**
 
@@ -172,17 +173,17 @@ The following flags can be used to validate issue status:
 
 ### Options
 
-| key             | description                                                                                                                                                                                                                                                                                                        | required | default |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------- |
-| `github-token`  | Token used to update PR description. `GITHUB_TOKEN` is already available [when you use GitHub actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret), so all that is required is to pass it as a param here. | true     | `null`    |
-| `jira-token`    | Token used to fetch Jira Issue information.  Check [below](#jira-token) for more details on how to generate the token.                                                                                                          | true     | null    |
-| `jira-base-url` | The subdomain of JIRA cloud that you use to access it. Ex: "https://your-domain.atlassian.net".                                                                                                                                                                                                                    | true     | `null`    |
-| `skip-branches` | A regex to ignore running `jira-lint` on certain branches, like production etc.                                                                                                                                                                                                                                    | false    | `''`     |
-| `skip-comments` | A `Boolean` if set to `true` then `jira-lint` will skip adding lint comments for PR title.                                                                                                                                                                                                                         | false    | `false`   |
-| `pr-threshold`  | An `Integer` based on which `jira-lint` will add a comment discouraging huge PRs.                                                                                                                                                                                                                                  | false    | `800`     |
-| `validate-issue-status`  | A `Boolean` based on which `jira-lint` will validate the status of the detected jira issue                                                                                                                                                                                                              | false    | `false`   |
-| `allowed-issue-statuses`  | A comma separated list of allowed statuses. The detected jira issue's status will be compared against this list and if a match is not found then the status check will fail. *Note*: Requires `validate-issue-status` to be set to `true`.                                                                                        | false    | `"In Progress"` |
-| `fail-on-error`  | A `Boolean` which, if set to `true`, fails the GitHub Action when an error occurs. Default `true`. | false    | `false` |
+| key                      | description                                                                                                                                                                                                                                | required | default         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | --------------- |
+| `github-token`           | Token used to update PR description. `GITHUB_TOKEN` is already available [when you use GitHub actions][ghtoken], so all that is required is to pass it as a param here.                                                                    | true     | `null`          |
+| `jira-token`             | Token used to fetch Jira Issue information.  Check [below](#jira-token) for more details on how to generate the token.                                                                                                                     | true     | null            |
+| `jira-base-url`          | The subdomain of JIRA cloud that you use to access it. Ex: "<https://your-domain.atlassian.net">.                                                                                                                                          | true     | `null`          |
+| `skip-branches`          | A regex to ignore running `jira-linter` on certain branches, like production etc.                                                                                                                                                          | false    | `''`            |
+| `skip-comments`          | A `Boolean` if set to `true` then `jira-linter` will skip adding lint comments for PR title.                                                                                                                                               | false    | `false`         |
+| `pr-threshold`           | An `Integer` based on which `jira-linter` will add a comment discouraging huge PRs.                                                                                                                                                        | false    | `800`           |
+| `validate-issue-status`  | A `Boolean` based on which `jira-linter` will validate the status of the detected jira issue                                                                                                                                               | false    | `false`         |
+| `allowed-issue-statuses` | A comma separated list of allowed statuses. The detected jira issue's status will be compared against this list and if a match is not found then the status check will fail. _Note_: Requires `validate-issue-status` to be set to `true`. | false    | `"In Progress"` |
+| `fail-on-error`          | A `Boolean` which, if set to `true`, fails the GitHub Action when an error occurs. Default `true`.                                                                                                                                         | false    | `false`         |
 
 ### `jira-token`
 
@@ -204,7 +205,7 @@ will work for all sets of branches you want to ignore. This is useful for
 merging protected/default branches into other branches. Check out some [examples
 in the tests][example].
 
-`jira-lint` already skips PRs which are filed by bots (for eg. [dependabot]).
+`jira-linter` already skips PRs which are filed by bots (for eg. [dependabot]).
 You can add more bots to [this list][bot-pattern], or add the branch-format
 followed by the bot PRs to the `skip-branches` option.
 
@@ -240,13 +241,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://hacktivist.in"><img src="https://avatars3.githubusercontent.com/u/4851763?v=4" width="100px;" alt=""/><br /><sub><b>Raj Anand</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=rajanand02" title="Code">💻</a> <a href="https://github.com/ClearTax/jira-lint/pulls?q=is%3Apr+reviewed-by%3Arajanand02" title="Reviewed Pull Requests">👀</a> <a href="#ideas-rajanand02" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://aditimohanty.com/?utm_source=github&utm_medium=documentation-allcontributors&utm_content=jira-lint"><img src="https://avatars3.githubusercontent.com/u/6426069?v=4" width="100px;" alt=""/><br /><sub><b>Aditi Mohanty</b></sub></a><br /><a href="https://github.com/ClearTax/jira-lint/commits?author=rheaditi" title="Code">💻</a> <a href="https://github.com/ClearTax/jira-lint/commits?author=rheaditi" title="Documentation">📖</a> <a href="#infra-rheaditi" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://github.com/dustman9000"><img src="https://avatars0.githubusercontent.com/u/3944352?v=4" width="100px;" alt=""/><br /><sub><b>Dustin Row</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/pulls?q=is%3Apr+reviewed-by%3Adustman9000" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/richardlhao"><img src="https://avatars1.githubusercontent.com/u/60636550?v=4" width="100px;" alt=""/><br /><sub><b>richardlhao</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=richardlhao" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.nimeshjm.com/"><img src="https://avatars3.githubusercontent.com/u/2178497?v=4" width="100px;" alt=""/><br /><sub><b>Nimesh Manmohanlal</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=nimeshjm" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/lwaddicor"><img src="https://avatars2.githubusercontent.com/u/10589338?v=4" width="100px;" alt=""/><br /><sub><b>Lewis Waddicor</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=lwaddicor" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/btwrk"><img src="https://avatars.githubusercontent.com/u/12283?v=4" width="100px;" alt=""/><br /><sub><b>Asbjørn Ulsberg</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=btwrk" title="Code">💻</a></td>
+    <td align="center"><a href="http://hacktivist.in"><img src="https://avatars3.githubusercontent.com/u/4851763?v=4" width="100px;" alt=""/><br /><sub><b>Raj Anand</b></sub></a><br /><a href="https://github.com/btwrk/jira-linter/commits?author=rajanand02" title="Code">💻</a> <a href="https://github.com/ClearTax/jira-linter/pulls?q=is%3Apr+reviewed-by%3Arajanand02" title="Reviewed Pull Requests">👀</a> <a href="#ideas-rajanand02" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://aditimohanty.com/?utm_source=github&utm_medium=documentation-allcontributors&utm_content=jira-linter"><img src="https://avatars3.githubusercontent.com/u/6426069?v=4" width="100px;" alt=""/><br /><sub><b>Aditi Mohanty</b></sub></a><br /><a href="https://github.com/ClearTax/jira-linter/commits?author=rheaditi" title="Code">💻</a> <a href="https://github.com/ClearTax/jira-linter/commits?author=rheaditi" title="Documentation">📖</a> <a href="#infra-rheaditi" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/dustman9000"><img src="https://avatars0.githubusercontent.com/u/3944352?v=4" width="100px;" alt=""/><br /><sub><b>Dustin Row</b></sub></a><br /><a href="https://github.com/btwrk/jira-linter/pulls?q=is%3Apr+reviewed-by%3Adustman9000" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/richardlhao"><img src="https://avatars1.githubusercontent.com/u/60636550?v=4" width="100px;" alt=""/><br /><sub><b>richardlhao</b></sub></a><br /><a href="https://github.com/btwrk/jira-linter/commits?author=richardlhao" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.nimeshjm.com/"><img src="https://avatars3.githubusercontent.com/u/2178497?v=4" width="100px;" alt=""/><br /><sub><b>Nimesh Manmohanlal</b></sub></a><br /><a href="https://github.com/btwrk/jira-linter/commits?author=nimeshjm" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/lwaddicor"><img src="https://avatars2.githubusercontent.com/u/10589338?v=4" width="100px;" alt=""/><br /><sub><b>Lewis Waddicor</b></sub></a><br /><a href="https://github.com/btwrk/jira-linter/commits?author=lwaddicor" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/btwrk"><img src="https://avatars.githubusercontent.com/u/12283?v=4" width="100px;" alt=""/><br /><sub><b>Asbjørn Ulsberg</b></sub></a><br /><a href="https://github.com/btwrk/jira-linter/commits?author=btwrk" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -254,22 +255,27 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors] specification. Contributions of any
+kind welcome!
 
-[all-contributors]: https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square
-[bot-pattern]: https://github.com/btwrk/jira-lint/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/src/constants.ts#L4
+[all-contributors-badge]: https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square
+[all-contributors]: https://github.com/all-contributors/all-contributors
+[bot-pattern]: https://github.com/btwrk/jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/src/constants.ts#L4
+[cleartax]: https://github.com/ClearTax
 [dependabot]: https://github.com/dependabot/dependabot-core
-[example]: https://github.com/btwrk/jira-lint/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/__tests__/utils.test.ts#L33-L44
+[example]: https://github.com/btwrk/jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/__tests__/utils.test.ts#L33-L44
 [generate-jira-token]: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
+[ghtoken]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
 [help-action]: https://help.github.com/en/articles/creating-a-javascript-action#commit-and-push-your-action-to-github
 [issue-types]: https://confluence.atlassian.com/adminjiracloud/issue-types-844500742.html
 [jira-api]: https://developer.atlassian.com/cloud/jira/platform/rest/v3/
+[jira-linter]: https://github.com/ClearTax/jira-linter
 [jira-permissions]: https://developer.atlassian.com/cloud/jira/platform/rest/v3/?utm_source=%2Fcloud%2Fjira%2Fplatform%2Frest%2F&utm_medium=302#api-rest-api-3-issue-issueIdOrKey-get
 [jira]: https://www.atlassian.com/software/jira
-[license-badge]: https://img.shields.io/github/license/btwrk/jira-lint
+[license-badge]: https://img.shields.io/github/license/btwrk/jira-linter
 [license]: https://opensource.org/licenses/MIT
-[package-version]: https://img.shields.io/github/package-json/v/btwrk/jira-lint?style=flat-square
+[package-version]: https://img.shields.io/github/package-json/v/btwrk/jira-linter?style=flat-square
 [pivotal-lint]: https://github.com/ClearTax/pivotal-lint/
-[releases]: https://github.com/cleartax/jira-lint/releases
+[releases]: https://github.com/btwrk/jira-linter/releases
 [secrets]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
-[test-badge]: https://github.com/btwrk/jira-lint/workflows/test/badge.svg
+[test-badge]: https://github.com/btwrk/jira-linter/workflows/test/badge.svg
