@@ -9,8 +9,8 @@
     "build": "ncc build src/main.ts -o lib -m",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "prettier --check src/**/*.ts && eslint src/**/*.ts",
-    "pretty": "prettier --write src/**/*.ts && eslint src/**/*.ts",
+    "lint": "prettier --check ./**/*.ts && eslint ./**/*.ts",
+    "pretty": "prettier --write ./**/*.ts && eslint ./**/*.ts",
     "docs:toc": "markdown-toc -i --bullets='-' README.md"
   },
   "repository": {
