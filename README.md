@@ -25,7 +25,6 @@
       - [Issue Status Validation](#issue-status-validation)
       - [Soft-validations via comments](#soft-validations-via-comments)
     - [Options](#options)
-    - [`jira-token`](#jira-token)
     - [Skipping branches](#skipping-branches)
   - [Contributing](#contributing)
   - [FAQ](#faq)
@@ -47,15 +46,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: btwrk/jira-linter@main
-        name: jira-linter
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           jira-token: ${{ secrets.JIRA_TOKEN }}
           jira-base-url: https://your-domain.atlassian.net
-          skip-branches: '^(production-release|master|release\/v\d+)$'
-          skip-comments: true
-          pr-threshold: 1000
-          fail-on-error: false
 ```
 
 It can also be used as part of an existing workflow by adding it as a step. More
@@ -175,21 +169,39 @@ The following flags can be used to validate issue status:
 
 ### Options
 
-| key                      | description                                                                                                                                                                                                                                | required | default         |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | --------------- |
-| `github-token`           | Token used to update PR description. `GITHUB_TOKEN` is already available [when you use GitHub actions][ghtoken], so all that is required is to pass it as a param here.                                                                    | true     | `null`          |
-| `jira-token`             | Token used to fetch Jira Issue information.  Check [below](#jira-token) for more details on how to generate the token.                                                                                                                     | true     | null            |
-| `jira-base-url`          | The subdomain of JIRA cloud that you use to access it. Ex: "<https://your-domain.atlassian.net">.                                                                                                                                          | true     | `null`          |
-| `skip-branches`          | A regex to ignore running `jira-linter` on certain branches, like production etc.                                                                                                                                                          | false    | `''`            |
-| `skip-comments`          | A `Boolean` if set to `true` then `jira-linter` will skip adding lint comments for PR title.                                                                                                                                               | false    | `false`         |
-| `pr-threshold`           | An `Integer` based on which `jira-linter` will add a comment discouraging huge PRs.                                                                                                                                                        | false    | `800`           |
-| `validate-issue-status`  | A `Boolean` based on which `jira-linter` will validate the status of the detected jira issue                                                                                                                                               | false    | `false`         |
-| `allowed-issue-statuses` | A comma separated list of allowed statuses. The detected jira issue's status will be compared against this list and if a match is not found then the status check will fail. _Note_: Requires `validate-issue-status` to be set to `true`. | false    | `"In Progress"` |
-| `fail-on-error`          | A `Boolean` which, if set to `true`, fails the GitHub Action when an error occurs. Default `true`.                                                                                                                                         | false    | `false`         |
+A full example with all available options and example values is provided below.
 
-### `jira-token`
+```yml
+- uses: btwrk/jira-linter@main
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    jira-token: ${{ secrets.JIRA_TOKEN }}
+    jira-base-url: https://your-domain.atlassian.net
+    skip-branches: '^(production-release|master|release\/v\d+)$'
+    skip-comments: true
+    pr-threshold: 1000
+    validate-issue-status: true
+    allowed-issue-statuses: |
+      To Do
+      In Progress
+      Done
+    fail-on-error: false
+```
 
-Since tokens are private, we suggest adding them as [GitHub secrets][secrets].
+| Key                      | Description                                                                                                                                                                                                                                             | Required | Default         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: | --------------- |
+| `github-token`           | Token used to update PR description. `GITHUB_TOKEN` is already available [when you use GitHub actions][ghtoken], so all that is required is to pass it as a param here.                                                                                 |     x    | `null`          |
+| `jira-token`             | Token used to fetch Jira Issue information.  Check [below](#jira-token) for more details on how to generate the token.                                                                                                                                  |     x    | `null`          |
+| `jira-base-url`          | The subdomain of JIRA cloud that you use to access it. Ex: `https://your-domain.atlassian.net`.                                                                                                                                                         |     x    | `null`          |
+| `skip-branches`          | A regex to ignore running `jira-linter` on certain branches, like production etc.                                                                                                                                                                       |          | `''`            |
+| `skip-comments`          | A `Boolean` if set to `true` then `jira-linter` will skip adding lint comments for PR title.                                                                                                                                                            |          | `false`         |
+| `pr-threshold`           | An `Integer` based on which `jira-linter` will add a comment discouraging huge PRs.                                                                                                                                                                     |          | `800`           |
+| `validate-issue-status`  | A `Boolean` based on which `jira-linter` will validate the status of the detected jira issue                                                                                                                                                            |          | `false`         |
+| `allowed-issue-statuses` | A line-separated list of acceptable Jira issue statuses. The detected jira issue's status will be compared against this list and if a match is not found then the status check will fail. _Note_: Requires `validate-issue-status` to be set to `true`. |          | `'In Progress'` |
+| `fail-on-error`          | A `Boolean` which, if set to `true`, fails the GitHub Action when an error occurs. Default `true`.                                                                                                                                                      |          | `false`         |
+
+**Special note on `jira-token`:** Since tokens are private, we suggest adding
+them as [GitHub secrets][secrets].
 
 The Jira token is used to fetch issue information via the Jira REST API. To get
 the token you need to:

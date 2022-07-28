@@ -176,27 +176,25 @@ Valid sample branch names:
   };
 
   /** Get the comment body for very huge PR. */
-  static getInvalidIssueStatusComment = (
-    /** Number of additions. */
-    issueStatus: string,
-    /** Threshold of additions allowed. */
-    allowedStatuses: string
-  ): string =>
-    `<p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>
-   <table>
-     <tr>
-        <th>Detected Status</th>
-        <td>${issueStatus}</td>
-        <td>:x:</td>
-     </tr>
-     <tr>
-        <th>Allowed Statuses</th>
-        <td>${allowedStatuses}</td>
-        <td>:heavy_check_mark:</td>
-      </tr>
-   </table>
-   <p>Please ensure your jira story is in one of the allowed statuses</p>
-  `;
+  static getInvalidIssueStatusComment = (issueStatus: string, allowedStatuses: string[]): string => {
+    const allowedStatusesString = allowedStatuses.join(', ');
+
+    return `<p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>
+      <table>
+        <tr>
+            <th>Detected Status</th>
+            <td>${issueStatus}</td>
+            <td>:x:</td>
+        </tr>
+        <tr>
+            <th>Allowed Statuses</th>
+            <td>${allowedStatusesString}</td>
+            <td>:heavy_check_mark:</td>
+          </tr>
+      </table>
+      <p>Please ensure your jira story is in one of the allowed statuses</p>
+    `;
+  };
 
   /** Reverse a string. */
   private static reverseString = (input: string): string => input.split('').reverse().join('');

@@ -26,7 +26,7 @@ const getInputs = (): JIRALintActionInputs => {
   const skipComments: boolean = core.getInput('skip-comments', { required: false }) === 'true';
   const prThreshold = parseInt(core.getInput('pr-threshold', { required: false }), 10);
   const validateIssueStatus: boolean = core.getInput('validate-issue-status', { required: false }) === 'true';
-  const allowedIssueStatuses: string = core.getInput('allowed-issue-statuses');
+  const allowedIssueStatuses: string[] = core.getMultilineInput('allowed-issue-statuses');
   const failOnError: boolean = core.getInput('fail-on-error', { required: false }) !== 'false';
 
   return {
@@ -181,7 +181,7 @@ async function run(): Promise<void> {
         console.log('PR description will not be updated.');
       }
 
-      if (!Jira.isIssueStatusValid(validateIssueStatus, allowedIssueStatuses.split(','), details)) {
+      if (!Jira.isIssueStatusValid(validateIssueStatus, allowedIssueStatuses, details)) {
         const body = Jira.getInvalidIssueStatusComment(details.status, allowedIssueStatuses);
         const invalidIssueStatusComment = { ...commonPayload, body };
         console.log('Adding comment for invalid issue status');

@@ -147,7 +147,7 @@ export interface JIRALintActionInputs {
   skipComments: boolean;
   prThreshold: number;
   validateIssueStatus: boolean;
-  allowedIssueStatuses: string;
+  allowedIssueStatuses: string[];
   failOnError: boolean;
 }
 
