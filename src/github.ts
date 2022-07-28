@@ -16,6 +16,10 @@ export class GitHub {
 
   constructor(token: string) {
     this.client = github.getOctokit(token);
+
+    if (this.client === undefined || this.client === null) {
+      throw new Error('Unable to create GitHub client');
+    }
   }
 
   /** Add the specified label to the PR. */
