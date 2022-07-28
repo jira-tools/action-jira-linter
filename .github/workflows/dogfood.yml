@@ -1,0 +1,16 @@
+name: test
+on: [push, pull_request]
+jobs:
+  dogfood:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          jira-user: ${{ secrets.JIRA_USER }}
+          jira-token: ${{ secrets.JIRA_TOKEN }}
+          jira-base-url: https://payexjira.atlassian.net
+          skip-branches: '^(develop|master|main|release\/v?\d+)$'
+          validate-issue-status: true
+          fail-on-error: false

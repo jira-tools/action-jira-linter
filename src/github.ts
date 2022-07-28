@@ -1,6 +1,5 @@
 import * as core from '@actions/core';
 import * as octokit from '@octokit/rest';
-import * as github from '@actions/github';
 import similarity from 'string-similarity';
 import { CreateIssueCommentParams, PullRequestUpdateParams, UpdateLabelParams } from './types';
 import { BOT_BRANCH_PATTERNS, DEFAULT_BRANCH_PATTERNS, MARKER_REGEX } from './constants';
@@ -11,11 +10,14 @@ export class GitHub {
     hotfixProd: 'HOTFIX-PROD',
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  client: octokit.Octokit & any;
+  client: octokit.Octokit;
 
   constructor(token: string) {
-    this.client = github.getOctokit(token);
+    this.client = new octokit.Octokit({ auth: token });
+
+    if (this.client === undefined || this.client === null) {
+      throw new Error('Unable to create GitHub client');
+    }
   }
 
   /** Add the specified label to the PR. */
@@ -148,7 +150,10 @@ export class GitHub {
       return true;
     }
 
-    console.log(`branch '${branch}' does not match ignore pattern provided in 'skip-branches' option:`, ignorePattern);
+    console.log(
+      `branch '${branch}' is not a default branch and does not match ignore pattern provided in 'skip-branches' option:`,
+      ignorePattern
+    );
     return false;
   };
 

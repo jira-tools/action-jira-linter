@@ -15,59 +15,79 @@ import { GitHub } from './github';
 import { Jira } from './jira';
 
 const getInputs = (): JIRALintActionInputs => {
-  const JIRA_USER: string = core.getInput('jira-user', { required: true });
-  const JIRA_TOKEN: string = core.getInput('jira-token', { required: true });
-  const JIRA_BASE_URL: string = core.getInput('jira-base-url', {
+  const jiraUser: string = core.getInput('jira-user', { required: true });
+  const jiraToken: string = core.getInput('jira-token', { required: true });
+  const jiraBaseURL: string = core.getInput('jira-base-url', {
     required: true,
   });
-  const GITHUB_TOKEN: string = core.getInput('github-token', {
+  const githubToken: string = core.getInput('github-token', {
     required: true,
   });
-  const BRANCH_IGNORE_PATTERN: string = core.getInput('skip-branches', { required: false }) || '';
-  const SKIP_COMMENTS: boolean = core.getInput('skip-comments', { required: false }) === 'true';
-  const PR_THRESHOLD = parseInt(core.getInput('pr-threshold', { required: false }), 10);
-  const VALIDATE_ISSUE_STATUS: boolean = core.getInput('validate_issue_status', { required: false }) === 'true';
-  const ALLOWED_ISSUE_STATUSES: string = core.getInput('allowed_issue_statuses');
+  const branchIgnorePattern: string = core.getInput('skip-branches', { required: false }) || '';
+  const skipComments: boolean = core.getInput('skip-comments', { required: false }) === 'true';
+  const prThreshold = parseInt(core.getInput('pr-threshold', { required: false }), 10);
+  const validateIssueStatus: boolean = core.getInput('validate-issue-status', { required: false }) === 'true';
+  const allowedIssueStatuses: string = core.getInput('allowed-issue-statuses');
+  const failOnError: boolean = core.getInput('fail-on-error', { required: false }) !== 'false';
 
   return {
-    jiraUser: JIRA_USER,
-    jiraToken: JIRA_TOKEN,
-    githubToken: GITHUB_TOKEN,
-    branchIgnorePattern: BRANCH_IGNORE_PATTERN,
-    skipComments: SKIP_COMMENTS,
-    prThreshold: isNaN(PR_THRESHOLD) ? DEFAULT_PR_ADDITIONS_THRESHOLD : PR_THRESHOLD,
-    jiraBaseURL: JIRA_BASE_URL.endsWith('/') ? JIRA_BASE_URL.replace(/\/$/, '') : JIRA_BASE_URL,
-    validateIssueStatus: VALIDATE_ISSUE_STATUS,
-    allowedIssueStatuses: ALLOWED_ISSUE_STATUSES,
+    jiraUser,
+    jiraToken,
+    githubToken,
+    branchIgnorePattern,
+    skipComments,
+    prThreshold: isNaN(prThreshold) ? DEFAULT_PR_ADDITIONS_THRESHOLD : prThreshold,
+    jiraBaseURL: jiraBaseURL.endsWith('/') ? jiraBaseURL.replace(/\/$/, '') : jiraBaseURL,
+    validateIssueStatus,
+    allowedIssueStatuses,
+    failOnError,
   };
 };
 
 async function run(): Promise<void> {
   try {
     const {
-      jiraUser: JIRA_USER,
-      jiraToken: JIRA_TOKEN,
-      jiraBaseURL: JIRA_BASE_URL,
-      githubToken: GITHUB_TOKEN,
-      branchIgnorePattern: BRANCH_IGNORE_PATTERN,
-      skipComments: SKIP_COMMENTS,
-      prThreshold: PR_THRESHOLD,
-      validateIssueStatus: VALIDATE_ISSUE_STATUS,
-      allowedIssueStatuses: ALLOWED_ISSUE_STATUSES,
+      jiraUser,
+      jiraToken,
+      jiraBaseURL,
+      githubToken,
+      branchIgnorePattern,
+      skipComments,
+      prThreshold,
+      validateIssueStatus,
+      allowedIssueStatuses,
+      failOnError,
     } = getInputs();
 
+    const exit = (message: string): void => {
+      let exitCode = 0;
+
+      if (failOnError) {
+        core.setFailed(message);
+        exitCode = 1;
+      } else {
+        console.log(message);
+      }
+
+      process.exit(exitCode);
+    };
+
     const defaultAdditionsCount = 800;
-    const prThreshold: number = PR_THRESHOLD ? Number(PR_THRESHOLD) : defaultAdditionsCount;
+    const threshold: number = prThreshold ? Number(prThreshold) : defaultAdditionsCount;
 
     const {
       payload: { repository, pull_request: pullRequest },
     } = github.context;
 
     if (typeof repository === 'undefined') {
-      throw new Error(`Missing 'repository' from github action context.`);
+      // eslint-disable-next-line i18n-text/no-en
+      return exit(`Missing 'repository' from github action context.`);
     }
 
-    console.log(pullRequest);
+    if (typeof pullRequest === 'undefined') {
+      console.log(`Missing 'pull_request' from github action context. Skipping.`);
+      return;
+    }
 
     const {
       name: repo,
@@ -85,11 +105,11 @@ async function run(): Promise<void> {
 
     // common fields for both issue and comment
     const commonPayload: UpdateIssueParams = { owner, repo, issue: prNumber };
-    const gh = new GitHub(GITHUB_TOKEN);
-    const jira = new Jira(JIRA_BASE_URL, JIRA_USER, JIRA_TOKEN);
+    const gh = new GitHub(githubToken);
+    const jira = new Jira(jiraBaseURL, jiraUser, jiraToken);
 
     if (!headBranch && !baseBranch) {
-      const commentBody = 'jira-lint is unable to determine the head and base branch';
+      const commentBody = 'jira-lint is unable to determine the head and base branch.';
       const comment: CreateIssueCommentParams = {
         ...commonPayload,
         body: commentBody,
@@ -97,14 +117,13 @@ async function run(): Promise<void> {
       await gh.addComment(comment);
 
       // eslint-disable-next-line i18n-text/no-en
-      core.setFailed('Unable to get the head and base branch');
-      process.exit(1);
+      return exit('Unable to get the head and base branch.');
     }
 
     console.log('Base branch -> ', baseBranch);
     console.log('Head branch -> ', headBranch);
 
-    if (GitHub.shouldSkipBranchLint(headBranch, BRANCH_IGNORE_PATTERN)) {
+    if (GitHub.shouldSkipBranchLint(headBranch, branchIgnorePattern)) {
       process.exit(0);
     }
 
@@ -114,8 +133,7 @@ async function run(): Promise<void> {
       const comment = { ...commonPayload, body };
       await gh.addComment(comment);
 
-      core.setFailed('JIRA issue id is missing in your branch.');
-      process.exit(1);
+      return exit('JIRA issue id is missing in your branch.');
     }
 
     // use the last match (end of the branch name)
@@ -146,15 +164,15 @@ async function run(): Promise<void> {
         await gh.updatePrDetails(prData);
 
         // add comment for PR title
-        if (!SKIP_COMMENTS) {
+        if (!skipComments) {
           const prTitleCommentBody = gh.getPRTitleComment(details.summary, title);
           const prTitleComment = { ...commonPayload, body: prTitleCommentBody };
           console.log('Adding comment for the PR title');
           gh.addComment(prTitleComment);
 
           // add a comment if the PR is huge
-          if (GitHub.isHumongousPR(additions, prThreshold)) {
-            const hugePrCommentBody = GitHub.getHugePrComment(additions, prThreshold);
+          if (GitHub.isHumongousPR(additions, threshold)) {
+            const hugePrCommentBody = GitHub.getHugePrComment(additions, threshold);
             const hugePrComment = { ...commonPayload, body: hugePrCommentBody };
             console.log('Adding comment for huge PR');
             gh.addComment(hugePrComment);
@@ -164,15 +182,14 @@ async function run(): Promise<void> {
         console.log('PR description will not be updated.');
       }
 
-      if (!Jira.isIssueStatusValid(VALIDATE_ISSUE_STATUS, ALLOWED_ISSUE_STATUSES.split(','), details)) {
-        const body = Jira.getInvalidIssueStatusComment(details.status, ALLOWED_ISSUE_STATUSES);
+      if (!Jira.isIssueStatusValid(validateIssueStatus, allowedIssueStatuses.split(','), details)) {
+        const body = Jira.getInvalidIssueStatusComment(details.status, allowedIssueStatuses);
         const invalidIssueStatusComment = { ...commonPayload, body };
         console.log('Adding comment for invalid issue status');
         await gh.addComment(invalidIssueStatusComment);
 
         // eslint-disable-next-line i18n-text/no-en
-        core.setFailed('The found jira issue does is not in acceptable statuses');
-        process.exit(1);
+        return exit('The found jira issue does is not in acceptable statuses');
       } else {
         console.log('The issue status is valid.');
       }
@@ -182,13 +199,12 @@ async function run(): Promise<void> {
       await gh.addComment(comment);
 
       // eslint-disable-next-line i18n-text/no-en
-      core.setFailed('Invalid JIRA key. Please create a branch with a valid JIRA issue key.');
-      process.exit(1);
+      return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key.');
     }
   } catch (error) {
     console.log({ error });
-    // eslint-disable-next-line i18n-text/no-en
-    core.setFailed((error as Error)?.message ?? 'An unknown error occurred');
+
+    core.setFailed((error as Error)?.message ?? 'FATAL: An unknown error occurred');
     process.exit(1);
   }
 }

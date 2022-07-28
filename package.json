@@ -6,11 +6,12 @@
   "scripts": {
     "prepare": "husky install",
     "prebuild": "engines-ok && rm -rf lib",
-    "build": "ncc build src/main.ts -o lib -m",
+    "build": "ncc build src/main.ts --out lib --minify --source-map",
+    "all": "npm run pretty && npm run build && npm run test",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "prettier --check ./**/*.ts && eslint ./**/*.ts",
-    "pretty": "prettier --write ./**/*.ts && eslint ./**/*.ts",
+    "pretty": "prettier --write ./**/*.ts && eslint --fix ./**/*.ts",
     "docs:toc": "markdown-toc -i --bullets='-' README.md"
   },
   "repository": {
