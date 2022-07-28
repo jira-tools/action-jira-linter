@@ -5,7 +5,6 @@ import {
   CreateIssueCommentParams,
   JIRADetails,
   JIRALintActionInputs,
-  Label,
   PullRequestParams,
   PullRequestUpdateParams,
   UpdateIssueParams,
@@ -142,10 +141,10 @@ async function run(): Promise<void> {
 
     const details: JIRADetails = await jira.getTicketDetails(issueKey);
     if (details.key) {
-      const podLabel: Label = { name: details?.project?.name || '' };
-      const hotfixLabel: Label = { name: GitHub.getHotfixLabel(baseBranch) };
-      const typeLabel: Label = { name: details?.type?.name || '' };
-      const labels: Label[] = [podLabel, hotfixLabel, typeLabel].filter((l) => l != null && l.name != null);
+      const podLabel: string = details?.project?.name || '';
+      const hotfixLabel: string = GitHub.getHotfixLabel(baseBranch);
+      const typeLabel: string = details?.type?.name || '';
+      const labels: string[] = [podLabel, hotfixLabel, typeLabel].filter((l) => l != null && l.length > 0);
       console.log('Adding lables -> ', labels);
 
       await gh.addLabels({ ...commonPayload, labels });
