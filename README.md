@@ -13,21 +13,22 @@
 
 <!-- toc -->
 
-- [Installation](#installation)
-  - [Semantic Versions](#semantic-versions)
-- [Features](#features)
-  - [PR Status Checks](#pr-status-checks)
-  - [PR Description & Labels](#pr-description--labels)
-    - [Description](#description)
-    - [Labels](#labels)
-    - [Issue Status Validation](#issue-status-validation)
-    - [Soft-validations via comments](#soft-validations-via-comments)
-  - [Options](#options)
-  - [`jira-token`](#jira-token)
-  - [Skipping branches](#skipping-branches)
-- [Contributing](#contributing)
-- [FAQ](#faq)
-- [Contributors](#contributors)
+- [jira-linter 🧹](#jira-linter-)
+  - [Installation](#installation)
+    - [Semantic Versions](#semantic-versions)
+  - [Features](#features)
+    - [PR Status Checks](#pr-status-checks)
+    - [PR Description & Labels](#pr-description--labels)
+      - [Description](#description)
+      - [Labels](#labels)
+      - [Issue Status Validation](#issue-status-validation)
+      - [Soft-validations via comments](#soft-validations-via-comments)
+    - [Options](#options)
+    - [`jira-token`](#jira-token)
+    - [Skipping branches](#skipping-branches)
+  - [Contributing](#contributing)
+  - [FAQ](#faq)
+  - [Contributors](#contributors)
 
 <!-- tocstop -->
 
@@ -258,7 +259,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 This project follows the [all-contributors] specification. Contributions of any
 kind welcome!
 
-[all-contributors-badge]: https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square
+[all-contributors-badge]: https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square
 [all-contributors]: https://github.com/all-contributors/all-contributors
 [bot-pattern]: https://github.com/btwrk/jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/src/constants.ts#L4
 [cleartax]: https://github.com/ClearTax
