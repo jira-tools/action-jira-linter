@@ -37,7 +37,10 @@ jobs:
         path: lib/index.js
 
     - name: test
-      run: npm run test
+      run: npm run test:cov
+
+    - name: codecov
+      uses: codecov/codecov-action@v3
 
     - uses: ./
       if: github.owner == 'btwrk'

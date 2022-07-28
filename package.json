@@ -9,6 +9,7 @@
     "build": "ncc build src/main.ts --out lib --minify --source-map",
     "all": "npm run pretty && npm run build && npm run test",
     "test": "jest",
+    "test:cov": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "prettier --check ./**/*.ts && eslint ./**/*.ts",
     "pretty": "prettier --write ./**/*.ts && eslint --fix ./**/*.ts",
