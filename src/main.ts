@@ -68,7 +68,8 @@ async function run(): Promise<void> {
     }
 
     if (typeof pullRequest === 'undefined') {
-      throw new Error(`Missing 'pull_request' from github action context.`);
+      console.log(`Missing 'pull_request' from github action context. Skipping.`);
+      return;
     }
 
     const {
