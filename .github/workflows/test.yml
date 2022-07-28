@@ -1,7 +1,7 @@
-name: "lint, build & test"
+name: test
 on: [push, pull_request]
 jobs:
-  build-test:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -10,16 +10,16 @@ jobs:
       with:
         node-version: '13.x'
 
-    - name: "install"
+    - name: install
       run: npm ci
 
-    - name: "lint"
+    - name: lint
       run: npm run lint
 
-    - name: "build"
+    - name: build
       run: npm run build
 
-    - name: "check for uncommitted changes"
+    - name: check for uncommitted changes
       # Ensure no diff when built on ci
       # ignore node_modules since dev/fresh ci deps installed.
       run: |
@@ -28,12 +28,12 @@ jobs:
                   "and check in all changes" \
             && exit 1)
 
-    - name: "archive lib when diff"
+    - name: archive lib when diff
       uses: actions/upload-artifact@v1
       if: failure()
       with:
         name: ci-built-lib
         path: lib/index.js
 
-    - name: "test"
+    - name: test
       run: npm run test
