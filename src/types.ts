@@ -16,6 +16,7 @@ export interface PullRequestUpdateParams extends UpdateParams {
 
 export interface PullRequestParams {
   number: number;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   html_url?: string;
   body?: string;
   base: {
@@ -24,6 +25,7 @@ export interface PullRequestParams {
   head: {
     ref: string;
   };
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   changed_files?: number;
   additions?: number;
   title?: string;
@@ -34,11 +36,12 @@ export interface CreateIssueCommentParams extends UpdateIssueParams {
   body: string;
 }
 
+// eslint-disable-next-line no-shadow
 export enum StoryType {
-  Feature = 'feature',
-  Bug = 'bug',
-  Chore = 'chore',
-  Release = 'release',
+  feature = 'feature',
+  bug = 'bug',
+  chore = 'chore',
+  release = 'release',
 }
 
 export interface Label {
@@ -49,15 +52,16 @@ export interface UpdateLabelParams extends UpdateIssueParams {
   labels: Label[];
 }
 
+// eslint-disable-next-line no-shadow
 export const enum StoryState {
-  Accepted = 'accepted',
-  Delivered = 'delivered',
-  Finished = 'finished',
-  Planned = 'planned',
-  Rejected = 'rejected',
-  Started = 'started',
-  Unscheduled = 'unscheduled',
-  Unstarted = 'unstarted',
+  accepted = 'accepted',
+  delivered = 'delivered',
+  finished = 'finished',
+  planned = 'planned',
+  rejected = 'rejected',
+  started = 'started',
+  unscheduled = 'unscheduled',
+  unstarted = 'unstarted',
 }
 
 export namespace JIRA {
@@ -135,15 +139,15 @@ export interface JIRADetails {
 }
 
 export interface JIRALintActionInputs {
-  JIRA_USER: string;
-  JIRA_TOKEN: string;
-  JIRA_BASE_URL: string;
-  GITHUB_TOKEN: string;
-  BRANCH_IGNORE_PATTERN: string;
-  SKIP_COMMENTS: boolean;
-  PR_THRESHOLD: number;
-  VALIDATE_ISSUE_STATUS: boolean;
-  ALLOWED_ISSUE_STATUSES: string;
+  jiraUser: string;
+  jiraToken: string;
+  jiraBaseURL: string;
+  githubToken: string;
+  branchIgnorePattern: string;
+  skipComments: boolean;
+  prThreshold: number;
+  validateIssueStatus: boolean;
+  allowedIssueStatuses: string;
 }
 
 export interface JIRAClient {

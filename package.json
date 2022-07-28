@@ -10,6 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "prettier --check src/**/*.ts && eslint src/**/*.ts",
+    "pretty": "prettier --write src/**/*.ts && eslint src/**/*.ts",
     "docs:toc": "markdown-toc -i --bullets='-' README.md"
   },
   "repository": {

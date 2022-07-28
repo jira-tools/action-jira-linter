@@ -1,7 +1,7 @@
-import axios, { AxiosInstance } from "axios";
-import * as core from "@actions/core";
-import { JIRA, JIRADetails } from "./types";
-import { HIDDEN_MARKER, JIRA_REGEX_MATCHER } from "./constants";
+import axios, { AxiosInstance } from 'axios';
+import * as core from '@actions/core';
+import { JIRA, JIRADetails } from './types';
+import { HIDDEN_MARKER, JIRA_REGEX_MATCHER } from './constants';
 
 export class Jira {
   client: AxiosInstance;
@@ -15,37 +15,29 @@ export class Jira {
   /**
    * Get links to labels & remove spacing so the table works.
    */
-  static getLabelsForDisplay = (labels: JIRADetails["labels"]): string => {
+  static getLabelsForDisplay = (labels: JIRADetails['labels']): string => {
     if (!labels || !labels.length) {
-      return "-";
+      return '-';
     }
-    const markUp = labels.map((label) =>
-      `<a href="${label.url}" title="${label.name}">${label.name}</a>`
-    ).join(", ");
-    return markUp.replace(/\s+/, " ");
+    const markUp = labels.map((label) => `<a href="${label.url}" title="${label.name}">${label.name}</a>`).join(', ');
+    return markUp.replace(/\s+/, ' ');
   };
 
   /** Extract JIRA issue keys from a string. */
   static getJIRAIssueKeys = (input: string): string[] => {
-    const matches = this.reverseString(input).toUpperCase().match(
-      JIRA_REGEX_MATCHER,
-    );
+    const matches = this.reverseString(input).toUpperCase().match(JIRA_REGEX_MATCHER);
     if (matches?.length) {
       return matches.map(this.reverseString).reverse();
     } else return [];
   };
 
-  private getJIRAClient = (
-    baseURL: string,
-    username: string,
-    token: string,
-  ): AxiosInstance => {
+  private getJIRAClient = (baseURL: string, username: string, token: string): AxiosInstance => {
     const credentials = `${username}:${token}`;
-    const authorization = Buffer.from(credentials).toString("base64");
+    const authorization = Buffer.from(credentials).toString('base64');
     return axios.create({
       baseURL: `${baseURL}/rest/api/3`,
       timeout: 2000,
-      headers: { Authorization: `Basic ${authorization}` },
+      headers: { authorization: `Basic ${authorization}` },
     });
   };
 
@@ -65,11 +57,9 @@ export class Jira {
 
       const labels = rawLabels.map((label) => ({
         name: label,
-        url: `${this.baseURL}/issues?jql=${
-          encodeURIComponent(
-            `project = ${project.key} AND labels = ${label} ORDER BY created DESC`,
-          )
-        }`,
+        url: `${this.baseURL}/issues?jql=${encodeURIComponent(
+          `project = ${project.key} AND labels = ${label} ORDER BY created DESC`
+        )}`,
       }));
 
       return {
@@ -86,9 +76,7 @@ export class Jira {
           url: `${this.baseURL}/browse/${project.key}`,
           key: project.key,
         },
-        estimate: typeof estimate === "string" || typeof estimate === "number"
-          ? estimate
-          : "N/A",
+        estimate: typeof estimate === 'string' || typeof estimate === 'number' ? estimate : 'N/A',
         labels,
       };
     } catch (e) {
@@ -99,7 +87,7 @@ export class Jira {
   getIssue = async (id: string): Promise<JIRA.Issue> => {
     try {
       const response = await this.client.get<JIRA.Issue>(
-        `/issue/${id}?fields=project,summary,issuetype,labels,status,customfield_10016`,
+        `/issue/${id}?fields=project,summary,issuetype,labels,status,customfield_10016`
       );
       return response.data;
     } catch (e) {
@@ -133,7 +121,7 @@ export class Jira {
     </tr>
     <tr>
       <th>Points</th>
-      <td>${details.estimate || "N/A"}</td>
+      <td>${details.estimate || 'N/A'}</td>
     </tr>
     <tr>
       <th>Labels</th>
@@ -146,7 +134,7 @@ export class Jira {
   ${HIDDEN_MARKER}
 -->`;
 
-    if (body !== undefined && body !== null && body.trim() !== "") {
+    if (body !== undefined && body !== null && body.trim() !== '') {
       description += `
 ---
 
@@ -176,12 +164,11 @@ Valid sample branch names:
   static isIssueStatusValid = (
     shouldValidate: boolean,
     allowedIssueStatuses: string[],
-    details: JIRADetails,
+    details: JIRADetails
   ): boolean => {
     if (!shouldValidate) {
-      core.info(
-        "Skipping Jira issue status validation as shouldValidate is false",
-      );
+      // eslint-disable-next-line i18n-text/no-en
+      core.info('Skipping Jira issue status validation as shouldValidate is false');
       return true;
     }
 
@@ -193,7 +180,7 @@ Valid sample branch names:
     /** Number of additions. */
     issueStatus: string,
     /** Threshold of additions allowed. */
-    allowedStatuses: string,
+    allowedStatuses: string
   ): string =>
     `<p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>
    <table>
@@ -212,6 +199,5 @@ Valid sample branch names:
   `;
 
   /** Reverse a string. */
-  private static reverseString = (input: string): string =>
-    input.split("").reverse().join("");
+  private static reverseString = (input: string): string => input.split('').reverse().join('');
 }
