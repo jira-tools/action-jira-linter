@@ -1,5 +1,19 @@
 import { AxiosInstance } from 'axios';
 
+export interface UpdateParams {
+  owner: string;
+  repo: string;
+}
+
+export interface UpdateIssueParams extends UpdateParams {
+  issue: number;
+}
+
+export interface PullRequestUpdateParams extends UpdateParams {
+  pullRequestNumber: number;
+  body?: string;
+}
+
 export interface PullRequestParams {
   number: number;
   html_url?: string;
@@ -16,6 +30,10 @@ export interface PullRequestParams {
   [key: string]: unknown;
 }
 
+export interface CreateIssueCommentParams extends UpdateIssueParams {
+  body: string;
+}
+
 export enum StoryType {
   Feature = 'feature',
   Bug = 'bug',
@@ -25,6 +43,10 @@ export enum StoryType {
 
 export interface Label {
   name: string;
+}
+
+export interface UpdateLabelParams extends UpdateIssueParams {
+  labels: Label[];
 }
 
 export const enum StoryState {
