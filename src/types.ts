@@ -148,6 +148,7 @@ export interface JIRALintActionInputs {
   prThreshold: number;
   validateIssueStatus: boolean;
   allowedIssueStatuses: string;
+  failOnError: boolean;
 }
 
 export interface JIRAClient {

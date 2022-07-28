@@ -12,20 +12,22 @@
 
 <!-- toc -->
 
-- [Installation](#installation)
-  - [Semantic Versions](#semantic-versions)
-- [Features](#features)
-  - [PR Status Checks](#pr-status-checks)
-  - [PR Description & Labels](#pr-description--labels)
-    - [Description](#description)
-    - [Labels](#labels)
-    - [Soft-validations via comments](#soft-validations-via-comments)
-  - [Options](#options)
-  - [`jira-token`](#jira-token)
-  - [Skipping branches](#skipping-branches)
-- [Contributing](#contributing)
-- [FAQ](#faq)
-- [Contributors](#contributors)
+- [jira-lint 🧹](#jira-lint-)
+  - [Installation](#installation)
+    - [Semantic Versions](#semantic-versions)
+  - [Features](#features)
+    - [PR Status Checks](#pr-status-checks)
+    - [PR Description & Labels](#pr-description--labels)
+      - [Description](#description)
+      - [Labels](#labels)
+      - [Issue Status Validation](#issue-status-validation)
+      - [Soft-validations via comments](#soft-validations-via-comments)
+    - [Options](#options)
+    - [`jira-token`](#jira-token)
+    - [Skipping branches](#skipping-branches)
+  - [Contributing](#contributing)
+  - [FAQ](#faq)
+  - [Contributors](#contributors)
 
 <!-- tocstop -->
 
@@ -50,6 +52,7 @@ jobs:
           skip-branches: '^(production-release|master|release\/v\d+)$'
           skip-comments: true
           pr-threshold: 1000
+          fail-on-error: false
 ```
 
 It can also be used as part of an existing workflow by adding it as a step. More information about the [options here](#options).
@@ -163,15 +166,15 @@ The following flags can be used to validate issue status:
 
 | key             | description                                                                                                                                                                                                                                                                                                        | required | default |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ------- |
-| `github-token`  | Token used to update PR description. `GITHUB_TOKEN` is already available [when you use GitHub actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret), so all that is required is to pass it as a param here. | true     | null    |
+| `github-token`  | Token used to update PR description. `GITHUB_TOKEN` is already available [when you use GitHub actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret), so all that is required is to pass it as a param here. | true     | `null`    |
 | `jira-token`    | Token used to fetch Jira Issue information.  Check [below](#jira-token) for more details on how to generate the token.                                                                                                          | true     | null    |
-| `jira-base-url` | The subdomain of JIRA cloud that you use to access it. Ex: "https://your-domain.atlassian.net".                                                                                                                                                                                                                    | true     | null    |
-| `skip-branches` | A regex to ignore running `jira-lint` on certain branches, like production etc.                                                                                                                                                                                                                                    | false    | ' '     |
-| `skip-comments` | A `Boolean` if set to `true` then `jira-lint` will skip adding lint comments for PR title.                                                                                                                                                                                                                         | false    | false   |
-| `pr-threshold`  | An `Integer` based on which `jira-lint` will add a comment discouraging huge PRs.                                                                                                                                                                                                                                  | false    | 800     |
-| `validate-issue-status`  | A `Boolean` based on which `jira-lint` will validate the status of the detected jira issue                                                                                                                                                                                                              | false    | false   |
+| `jira-base-url` | The subdomain of JIRA cloud that you use to access it. Ex: "https://your-domain.atlassian.net".                                                                                                                                                                                                                    | true     | `null`    |
+| `skip-branches` | A regex to ignore running `jira-lint` on certain branches, like production etc.                                                                                                                                                                                                                                    | false    | `''`     |
+| `skip-comments` | A `Boolean` if set to `true` then `jira-lint` will skip adding lint comments for PR title.                                                                                                                                                                                                                         | false    | `false`   |
+| `pr-threshold`  | An `Integer` based on which `jira-lint` will add a comment discouraging huge PRs.                                                                                                                                                                                                                                  | false    | `800`     |
+| `validate-issue-status`  | A `Boolean` based on which `jira-lint` will validate the status of the detected jira issue                                                                                                                                                                                                              | false    | `false`   |
 | `allowed-issue-statuses`  | A comma separated list of allowed statuses. The detected jira issue's status will be compared against this list and if a match is not found then the status check will fail. *Note*: Requires `validate-issue-status` to be set to `true`.                                                                                        | false    | `"In Progress"` |
-
+| `fail-on-error`  | A `Boolean` which, if set to `true`, fails the GitHub Action when an error occurs. Default `true`. | false    | `false` |
 
 ### `jira-token`
 

@@ -36,6 +36,10 @@ inputs:
       Requires validate-issue-status to be set to true.
     required: false
     default: "In Progress"
+  fail-on-error:
+    description: 'Set this to true if you want jira-lint to fail the PR if it encounters an error'
+    required: false
+    default: true
 
 runs:
   using: 'node12'

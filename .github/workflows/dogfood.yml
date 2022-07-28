@@ -13,3 +13,4 @@ jobs:
           jira-base-url: https://payexjira.atlassian.net
           skip-branches: '^(develop|master|main|release\/v?\d+)$'
           validate-issue-status: true
+          fail-on-error: false
