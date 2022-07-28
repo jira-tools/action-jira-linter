@@ -98,19 +98,19 @@ When a PR passes the above check, `jira-lint` will also add the issue details to
 
 #### Issue Status Validation
 Issue status is shown in the [Description](#description).
-**Why validate issue status?** 
+**Why validate issue status?**
 In some cases, one may be pushing changes for a story that is set to `Done`/`Completed` or it may not have been pulled into working backlog or current sprint.
 
  This option allows discouraging pushing to branches for stories that are set to statuses other than the ones allowed in the project; for example - you may want to only allow PRs for stories that are in `To Do`/`Planning`/`In Progress` states.
 
 The following flags can be used to validate issue status:
 - `validate_issue_status`
-  - If set to `true`, `jira-lint` will validate the issue status based on `allowed_issue_statuses`
-- `allowed_issue_statuses`
-  - This will only be used when `validate_issue_status` is `true`. This should be a comma separated list of statuses. If the detected issue's status is not in one of the `allowed_issue_statuses` then `jira-lint` will fail the status check.
+  - If set to `true`, `jira-lint` will validate the issue status based on `allowed-issue-statuses`
+- `allowed-issue-statuses`
+  - This will only be used when `validate_issue_status` is `true`. This should be a comma separated list of statuses. If the detected issue's status is not in one of the `allowed-issue-statuses` then `jira-lint` will fail the status check.
 
 **Example of invalid status**
-  <p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>    
+  <p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>
       <table>
         <tr>
             <th>Detected Status</th>
@@ -124,7 +124,7 @@ The following flags can be used to validate issue status:
           </tr>
       </table>
   <p>Please ensure your jira story is in one of the allowed statuses</p>
-    
+
 #### Soft-validations via comments
 
 `jira-lint` will add comments to a PR to encourage better PR practices:
@@ -170,7 +170,7 @@ The following flags can be used to validate issue status:
 | `skip-comments` | A `Boolean` if set to `true` then `jira-lint` will skip adding lint comments for PR title.                                                                                                                                                                                                                         | false    | false   |
 | `pr-threshold`  | An `Integer` based on which `jira-lint` will add a comment discouraging huge PRs.                                                                                                                                                                                                                                  | false    | 800     |
 | `validate_issue_status`  | A `Boolean` based on which `jira-lint` will validate the status of the detected jira issue                                                                                                                                                                                                              | false    | false   |
-| `allowed_issue_statuses`  | A comma separated list of allowed statuses. The detected jira issue's status will be compared against this list and if a match is not found then the status check will fail. *Note*: Requires `validate_issue_status` to be set to `true`.                                                                                        | false    | `"In Progress"` |
+| `allowed-issue-statuses`  | A comma separated list of allowed statuses. The detected jira issue's status will be compared against this list and if a match is not found then the status check will fail. *Note*: Requires `validate_issue_status` to be set to `true`.                                                                                        | false    | `"In Progress"` |
 
 
 ### `jira-token`

@@ -27,7 +27,7 @@ const getInputs = (): JIRALintActionInputs => {
   const SKIP_COMMENTS: boolean = core.getInput('skip-comments', { required: false }) === 'true';
   const PR_THRESHOLD = parseInt(core.getInput('pr-threshold', { required: false }), 10);
   const VALIDATE_ISSUE_STATUS: boolean = core.getInput('validate_issue_status', { required: false }) === 'true';
-  const ALLOWED_ISSUE_STATUSES: string = core.getInput('allowed_issue_statuses');
+  const ALLOWED_ISSUE_STATUSES: string = core.getInput('allowed-issue-statuses');
 
   return {
     jiraUser: JIRA_USER,
