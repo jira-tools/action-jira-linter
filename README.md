@@ -8,6 +8,7 @@
 [![All Contributors][all-contributors-badge]](#contributors)
 ![test][test-badge]
 ![CodeQL][codeql-badge]
+[![Codacy Badge][codacy-badge]][codacy]
 
 ---
 
@@ -263,6 +264,8 @@ kind welcome!
 [all-contributors]: https://github.com/all-contributors/all-contributors
 [bot-pattern]: https://github.com/btwrk/jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/src/constants.ts#L4
 [cleartax]: https://github.com/ClearTax
+[codacy-badge]: https://app.codacy.com/project/badge/Grade/97d96de47b1e47bfa379951251eafe4f
+[codacy]: https://www.codacy.com/gh/btwrk/jira-linter/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=btwrk/jira-linter&amp;utm_campaign=Badge_Grade
 [codeql-badge]: https://github.com/btwrk/jira-linter/workflows/CodeQL/badge.svg
 [dependabot]: https://github.com/dependabot/dependabot-core
 [example]: https://github.com/btwrk/jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/__tests__/utils.test.ts#L33-L44
