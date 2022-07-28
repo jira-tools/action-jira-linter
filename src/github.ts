@@ -148,7 +148,10 @@ export class GitHub {
       return true;
     }
 
-    console.log(`branch '${branch}' does not match ignore pattern provided in 'skip-branches' option:`, ignorePattern);
+    console.log(
+      `branch '${branch}' is not a default branch and does not match ignore pattern provided in 'skip-branches' option:`,
+      ignorePattern
+    );
     return false;
   };
 

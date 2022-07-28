@@ -13,7 +13,7 @@ export const BOT_BRANCH_PATTERNS: RegExp[] = [/^dependabot/, /^all-contributors/
 /**
  * Default branch patterms to skip CI. Skip jira-lint when the HEAD ref matches one of these.
  */
-export const DEFAULT_BRANCH_PATTERNS: RegExp[] = [/^master$/, /^production$/, /^gh-pages$/];
+export const DEFAULT_BRANCH_PATTERNS: RegExp[] = [/^main$/, /^master$/, /^production$/, /^gh-pages$/];
 
 /**
  * Regex to match JIRA issue keys.
