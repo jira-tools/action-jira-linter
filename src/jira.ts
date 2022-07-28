@@ -130,7 +130,7 @@ export class Jira {
   </table>
 </details>
 <!--
-  do not remove this marker as it will break jira-linter's functionality.
+  do not remove this marker as it will break action-jira-linter's functionality.
   ${HIDDEN_MARKER}
 -->`;
 
@@ -150,7 +150,7 @@ ${body}`;
 <p>Your branch: ${branch}</p>
 <p>If this is your first time contributing to this repository - welcome!</p>
 <hr />
-<p>Please refer to <a href="https://github.com/btwrk/jira-linter">jira-linter</a> to get started.
+<p>Please refer to <a href="https://github.com/btwrk/action-jira-linter">action-jira-linter</a> to get started.
 <p>Without the JIRA Issue ID in your branch name you would lose out on automatic updates to JIRA via SCM; some GitHub status checks might fail.</p>
 Valid sample branch names:
 

@@ -108,7 +108,7 @@ async function run(): Promise<void> {
     const jira = new Jira(jiraBaseURL, jiraUser, jiraToken);
 
     if (!headBranch && !baseBranch) {
-      const commentBody = 'jira-linter is unable to determine the head and base branch.';
+      const commentBody = 'action-jira-linter is unable to determine the head and base branch.';
       const comment: CreateIssueCommentParams = {
         ...commonPayload,
         body: commentBody,

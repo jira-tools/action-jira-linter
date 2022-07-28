@@ -20,7 +20,7 @@
       "login": "rheaditi",
       "name": "Aditi Mohanty",
       "avatar_url": "https://avatars3.githubusercontent.com/u/6426069?v=4",
-      "profile": "https://aditimohanty.com/?utm_source=github&utm_medium=documentation-allcontributors&utm_content=jira-linter",
+      "profile": "https://aditimohanty.com/?utm_source=github&utm_medium=documentation-allcontributors&utm_content=action-jira-linter",
       "contributions": [
         "code",
         "doc",
@@ -65,7 +65,7 @@
     }
   ],
   "contributorsPerLine": 7,
-  "projectName": "jira-linter",
+  "projectName": "action-jira-linter",
   "projectOwner": "btwrk",
   "repoType": "github",
   "repoHost": "https://github.com",

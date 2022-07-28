@@ -1,5 +1,5 @@
 {
-  "name": "jira-linter",
+  "name": "action-jira-linter",
   "version": "0.0.1",
   "description": "Add JIRA issue details to your GitHub pull request",
   "main": "lib/index.js",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/btwrk/jira-linter"
+    "url": "git+https://github.com/btwrk/action-jira-linter"
   },
   "engines": {
     "node": ">= 13",

@@ -1,4 +1,4 @@
-name: 'jira-linter'
+name: 'action-jira-linter'
 description: 'Add JIRA issue details to your GitHub pull request.'
 author: 'btwrk'
 inputs:
@@ -23,11 +23,11 @@ inputs:
     required: false
     default: false
   pr-threshold:
-    description: 'An `Integer` based on which jira-linter add a comment discouraging huge PRs. Is disabled by `skip-comments`'
+    description: 'An `Integer` based on which action-jira-linter add a comment discouraging huge PRs. Is disabled by `skip-comments`'
     required: false
     default: 800
   validate-issue-status:
-    description: 'Set this to true if you want jira-linter to validate the status of the detected jira issues'
+    description: 'Set this to true if you want action-jira-linter to validate the status of the detected jira issues'
     required: false
     default: false
   allowed-issue-statuses:
@@ -37,7 +37,7 @@ inputs:
     required: false
     default: "In Progress"
   fail-on-error:
-    description: 'Set this to true if you want jira-linter to fail the PR if it encounters an error'
+    description: 'Set this to true if you want action-jira-linter to fail the PR if it encounters an error'
     required: false
     default: true
 
