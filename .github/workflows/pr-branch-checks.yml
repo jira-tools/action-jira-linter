@@ -1,13 +1,8 @@
 name: "lint, build & test"
-on: # rebuild any PRs and main branch changes (mirror few typescript-action conventions)
-  pull_request:
-  push:
-    branches:
-      - master
-      - 'releases/*'
+on: [push, pull_request]
 jobs:
   build-test:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -42,4 +37,3 @@ jobs:
 
     - name: "test"
       run: npm run test
-
