@@ -3,6 +3,9 @@
 # install
 npm ci
 
+# run prettier
+npm run pretty
+
 # run build
 npm run build
 
