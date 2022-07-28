@@ -5,10 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       name: setup node
       with:
-        node-version: '16.x'
+        node-version: 16
+        cache: npm
 
     - name: install
       run: npm ci
