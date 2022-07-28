@@ -7,27 +7,27 @@
 [![License][license-badge]][license]
 [![All Contributors][all-contributors-badge]](#contributors)
 ![test][test-badge]
+![CodeQL][codeql-badge]
+
 ---
 
 <!-- toc -->
 
-- [jira-linter 🧹](#jira-linter-)
-  - [!test](#test)
-  - [Installation](#installation)
-    - [Semantic Versions](#semantic-versions)
-  - [Features](#features)
-    - [PR Status Checks](#pr-status-checks)
-    - [PR Description & Labels](#pr-description--labels)
-      - [Description](#description)
-      - [Labels](#labels)
-      - [Issue Status Validation](#issue-status-validation)
-      - [Soft-validations via comments](#soft-validations-via-comments)
-    - [Options](#options)
-    - [`jira-token`](#jira-token)
-    - [Skipping branches](#skipping-branches)
-  - [Contributing](#contributing)
-  - [FAQ](#faq)
-  - [Contributors](#contributors)
+- [Installation](#installation)
+  - [Semantic Versions](#semantic-versions)
+- [Features](#features)
+  - [PR Status Checks](#pr-status-checks)
+  - [PR Description & Labels](#pr-description--labels)
+    - [Description](#description)
+    - [Labels](#labels)
+    - [Issue Status Validation](#issue-status-validation)
+    - [Soft-validations via comments](#soft-validations-via-comments)
+  - [Options](#options)
+  - [`jira-token`](#jira-token)
+  - [Skipping branches](#skipping-branches)
+- [Contributing](#contributing)
+- [FAQ](#faq)
+- [Contributors](#contributors)
 
 <!-- tocstop -->
 
@@ -262,6 +262,7 @@ kind welcome!
 [all-contributors]: https://github.com/all-contributors/all-contributors
 [bot-pattern]: https://github.com/btwrk/jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/src/constants.ts#L4
 [cleartax]: https://github.com/ClearTax
+[codeql-badge]: https://github.com/btwrk/jira-linter/workflows/CodeQL/badge.svg
 [dependabot]: https://github.com/dependabot/dependabot-core
 [example]: https://github.com/btwrk/jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/__tests__/utils.test.ts#L33-L44
 [generate-jira-token]: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
