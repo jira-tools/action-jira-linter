@@ -40,7 +40,7 @@ jobs:
       run: npm run test
 
     - uses: ./
-      if: github.owner == 'asbjornu'
+      if: github.owner == 'btwrk'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         jira-user: ${{ secrets.JIRA_USER }}

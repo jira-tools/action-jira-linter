@@ -240,13 +240,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://hacktivist.in"><img src="https://avatars3.githubusercontent.com/u/4851763?v=4" width="100px;" alt=""/><br /><sub><b>Raj Anand</b></sub></a><br /><a href="https://github.com/asbjornu/jira-lint/commits?author=rajanand02" title="Code">💻</a> <a href="https://github.com/ClearTax/jira-lint/pulls?q=is%3Apr+reviewed-by%3Arajanand02" title="Reviewed Pull Requests">👀</a> <a href="#ideas-rajanand02" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://hacktivist.in"><img src="https://avatars3.githubusercontent.com/u/4851763?v=4" width="100px;" alt=""/><br /><sub><b>Raj Anand</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=rajanand02" title="Code">💻</a> <a href="https://github.com/ClearTax/jira-lint/pulls?q=is%3Apr+reviewed-by%3Arajanand02" title="Reviewed Pull Requests">👀</a> <a href="#ideas-rajanand02" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://aditimohanty.com/?utm_source=github&utm_medium=documentation-allcontributors&utm_content=jira-lint"><img src="https://avatars3.githubusercontent.com/u/6426069?v=4" width="100px;" alt=""/><br /><sub><b>Aditi Mohanty</b></sub></a><br /><a href="https://github.com/ClearTax/jira-lint/commits?author=rheaditi" title="Code">💻</a> <a href="https://github.com/ClearTax/jira-lint/commits?author=rheaditi" title="Documentation">📖</a> <a href="#infra-rheaditi" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-    <td align="center"><a href="https://github.com/dustman9000"><img src="https://avatars0.githubusercontent.com/u/3944352?v=4" width="100px;" alt=""/><br /><sub><b>Dustin Row</b></sub></a><br /><a href="https://github.com/asbjornu/jira-lint/pulls?q=is%3Apr+reviewed-by%3Adustman9000" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/richardlhao"><img src="https://avatars1.githubusercontent.com/u/60636550?v=4" width="100px;" alt=""/><br /><sub><b>richardlhao</b></sub></a><br /><a href="https://github.com/asbjornu/jira-lint/commits?author=richardlhao" title="Code">💻</a></td>
-    <td align="center"><a href="https://www.nimeshjm.com/"><img src="https://avatars3.githubusercontent.com/u/2178497?v=4" width="100px;" alt=""/><br /><sub><b>Nimesh Manmohanlal</b></sub></a><br /><a href="https://github.com/asbjornu/jira-lint/commits?author=nimeshjm" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/lwaddicor"><img src="https://avatars2.githubusercontent.com/u/10589338?v=4" width="100px;" alt=""/><br /><sub><b>Lewis Waddicor</b></sub></a><br /><a href="https://github.com/asbjornu/jira-lint/commits?author=lwaddicor" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/asbjornu"><img src="https://avatars.githubusercontent.com/u/12283?v=4" width="100px;" alt=""/><br /><sub><b>Asbjørn Ulsberg</b></sub></a><br /><a href="https://github.com/asbjornu/jira-lint/commits?author=asbjornu" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/dustman9000"><img src="https://avatars0.githubusercontent.com/u/3944352?v=4" width="100px;" alt=""/><br /><sub><b>Dustin Row</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/pulls?q=is%3Apr+reviewed-by%3Adustman9000" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/richardlhao"><img src="https://avatars1.githubusercontent.com/u/60636550?v=4" width="100px;" alt=""/><br /><sub><b>richardlhao</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=richardlhao" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.nimeshjm.com/"><img src="https://avatars3.githubusercontent.com/u/2178497?v=4" width="100px;" alt=""/><br /><sub><b>Nimesh Manmohanlal</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=nimeshjm" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/lwaddicor"><img src="https://avatars2.githubusercontent.com/u/10589338?v=4" width="100px;" alt=""/><br /><sub><b>Lewis Waddicor</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=lwaddicor" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/btwrk"><img src="https://avatars.githubusercontent.com/u/12283?v=4" width="100px;" alt=""/><br /><sub><b>Asbjørn Ulsberg</b></sub></a><br /><a href="https://github.com/btwrk/jira-lint/commits?author=btwrk" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -257,19 +257,19 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 [all-contributors]: https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square
-[bot-pattern]: https://github.com/asbjornu/jira-lint/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/src/constants.ts#L4
+[bot-pattern]: https://github.com/btwrk/jira-lint/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/src/constants.ts#L4
 [dependabot]: https://github.com/dependabot/dependabot-core
-[example]: https://github.com/asbjornu/jira-lint/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/__tests__/utils.test.ts#L33-L44
+[example]: https://github.com/btwrk/jira-lint/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/__tests__/utils.test.ts#L33-L44
 [generate-jira-token]: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 [help-action]: https://help.github.com/en/articles/creating-a-javascript-action#commit-and-push-your-action-to-github
 [issue-types]: https://confluence.atlassian.com/adminjiracloud/issue-types-844500742.html
 [jira-api]: https://developer.atlassian.com/cloud/jira/platform/rest/v3/
 [jira-permissions]: https://developer.atlassian.com/cloud/jira/platform/rest/v3/?utm_source=%2Fcloud%2Fjira%2Fplatform%2Frest%2F&utm_medium=302#api-rest-api-3-issue-issueIdOrKey-get
 [jira]: https://www.atlassian.com/software/jira
-[license-badge]: https://img.shields.io/github/license/asbjornu/jira-lint
+[license-badge]: https://img.shields.io/github/license/btwrk/jira-lint
 [license]: https://opensource.org/licenses/MIT
-[package-version]: https://img.shields.io/github/package-json/v/asbjornu/jira-lint?style=flat-square
+[package-version]: https://img.shields.io/github/package-json/v/btwrk/jira-lint?style=flat-square
 [pivotal-lint]: https://github.com/ClearTax/pivotal-lint/
 [releases]: https://github.com/cleartax/jira-lint/releases
 [secrets]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
-[test-badge]: https://github.com/asbjornu/jira-lint/workflows/test/badge.svg
+[test-badge]: https://github.com/btwrk/jira-lint/workflows/test/badge.svg
