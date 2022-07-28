@@ -1,6 +1,6 @@
 module.exports = {
   plugins: ['jest', '@typescript-eslint'],
-  extends: ['plugin:github/es6'],
+  extends: ['plugin:github/recommended', 'plugin:jest/recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 9,
@@ -16,13 +16,11 @@ module.exports = {
     '@typescript-eslint/no-require-imports': 'error',
     '@typescript-eslint/array-type': 'error',
     '@typescript-eslint/await-thenable': 'error',
-    '@typescript-eslint/ban-ts-ignore': 'error',
+    '@typescript-eslint/ban-ts-comment': 'error',
     'camelcase': 'off',
-    '@typescript-eslint/camelcase': 'error',
-    '@typescript-eslint/class-name-casing': 'error',
+    '@typescript-eslint/naming-convention': 'error',
     '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true }],
     '@typescript-eslint/func-call-spacing': ['error', 'never'],
-    '@typescript-eslint/generic-type-naming': ['error', '^[A-Z][A-Za-z]*$'],
     '@typescript-eslint/no-array-constructor': 'error',
     '@typescript-eslint/no-empty-interface': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
