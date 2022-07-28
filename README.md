@@ -1,7 +1,7 @@
 # jira-linter 🧹
 
 > A light-weight lint workflow to unite the worlds of GitHub and [Jira][jira].
-> Based on the fine work of [ClearTax][cleartax] on [jira-linter].
+> Based on the fine work of [ClearTax][cleartax] on [jira-lint].
 
 ![GitHub package.json version][package-version]
 [![License][license-badge]][license]
@@ -289,7 +289,7 @@ kind welcome!
 [help-action]: https://help.github.com/en/articles/creating-a-javascript-action#commit-and-push-your-action-to-github
 [issue-types]: https://confluence.atlassian.com/adminjiracloud/issue-types-844500742.html
 [jira-api]: https://developer.atlassian.com/cloud/jira/platform/rest/v3/
-[jira-linter]: https://github.com/ClearTax/jira-linter
+[jira-lint]: https://github.com/ClearTax/jira-lint
 [jira-permissions]: https://developer.atlassian.com/cloud/jira/platform/rest/v3/?utm_source=%2Fcloud%2Fjira%2Fplatform%2Frest%2F&utm_medium=302#api-rest-api-3-issue-issueIdOrKey-get
 [jira]: https://www.atlassian.com/software/jira
 [license-badge]: https://img.shields.io/github/license/btwrk/jira-linter
