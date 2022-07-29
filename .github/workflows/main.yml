@@ -22,4 +22,4 @@ jobs:
       - name: push
         run: git push --set-upstream origin "${branch_name}"
       - name: create pull request
-        run: gh pr create --title "Test"
+        run: gh pr create --title "Test" --body " "
