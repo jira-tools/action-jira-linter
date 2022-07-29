@@ -52,20 +52,30 @@ describe('getJIRAIssueKeys()', () => {
 });
 
 describe('getPRDescription()', () => {
+  const issue: JIRADetails = {
+    key: 'ABC-123',
+    url: 'url',
+    type: { name: 'feature', icon: 'feature-icon-url' },
+    estimate: 1,
+    labels: [{ name: 'frontend', url: 'frontend-url' }],
+    summary: 'Story title or summary',
+    project: { name: 'project', url: 'project-url', key: 'abc' },
+    status: 'In Progress',
+  };
+
   it('should include the hidden marker when getting PR description', () => {
-    const issue: JIRADetails = {
-      key: 'ABC-123',
-      url: 'url',
-      type: { name: 'feature', icon: 'feature-icon-url' },
-      estimate: 1,
-      labels: [{ name: 'frontend', url: 'frontend-url' }],
-      summary: 'Story title or summary',
-      project: { name: 'project', url: 'project-url', key: 'abc' },
-      status: 'In Progress',
-    };
     const description = Jira.getPRDescription('some_body', issue);
 
     expect(GitHub.shouldUpdatePRDescription(description)).toBeFalsy();
+    expect(description).toContain(issue.key);
+    expect(description).toContain(issue.estimate.toString());
+    expect(description).toContain(issue.status);
+    expect(description).toContain(issue.labels[0].name);
+  });
+
+  it('should work with null description', () => {
+    const description = Jira.getPRDescription(null, issue);
+
     expect(description).toContain(issue.key);
     expect(description).toContain(issue.estimate.toString());
     expect(description).toContain(issue.status);
