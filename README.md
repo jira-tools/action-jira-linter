@@ -17,7 +17,6 @@
 
 - [action-jira-linter 🧹](#action-jira-linter-)
   - [Installation](#installation)
-    - [Semantic Versions](#semantic-versions)
   - [Features](#features)
     - [PR Status Checks](#pr-status-checks)
     - [PR Description & Labels](#pr-description--labels)
@@ -35,8 +34,9 @@
 
 ## Installation
 
-To make `action-jira-linter` a part of your workflow, just add a `action-jira-linter.yml` file
-in your `.github/workflows/` directory in your GitHub repository.
+To make `action-jira-linter` a part of your workflow, just add a
+`action-jira-linter.yml` file in your `.github/workflows/` directory in your
+GitHub repository.
 
 ```yml
 name: action-jira-linter
@@ -46,7 +46,7 @@ jobs:
   action-jira-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: btwrk/action-jira-linter@main
+      - uses: btwrk/action-jira-linter@v1.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           jira-token: ${{ secrets.JIRA_TOKEN }}
@@ -56,36 +56,22 @@ jobs:
 It can also be used as part of an existing workflow by adding it as a step. More
 information about the [options here](#options).
 
-### Semantic Versions
-
-If you want more stability in versions of `action-jira-linter` than `@master` you can
-also use the [semantic releases for action-jira-linter][releases].
-
-Example:
-
-```yaml
-# ...
-steps:
-  - uses: btwrk/action-jira-linter@v0.1.0
-    name: action-jira-linter
-    # ...
-```
-
 ## Features
 
 ### PR Status Checks
 
-`action-jira-linter` adds a status check which helps you avoid merging PRs which are
-missing a valid Jira Issue Key in the branch name. It will use the [Jira
+`action-jira-linter` adds a status check which helps you avoid merging PRs which
+are missing a valid Jira Issue Key in the branch name. It will use the [Jira
 API][jira-api] to validate a given key.
 
 ### PR Description & Labels
 
 #### Description
 
-When a PR passes the above check, `action-jira-linter` will also add the issue details to
-the top of the PR description. It will pick details such as the Issue summary,
-type, estimation points, status and labels and add them to the PR description.
+When a PR passes the above check, `action-jira-linter` will also add the issue
+details to the top of the PR description. It will pick details such as the Issue
+summary, type, estimation points, status and labels and add them to the PR
+description.
 
 #### Labels
 
@@ -107,10 +93,16 @@ type, estimation points, status and labels and add them to the PR description.
 
 #### Issue Status Validation
 Issue status is shown in the [Description](#description).
-**Why validate issue status?**
-In some cases, one may be pushing changes for a story that is set to `Done`/`Completed` or it may not have been pulled into working backlog or current sprint.
 
- This option allows discouraging pushing to branches for stories that are set to statuses other than the ones allowed in the project; for example - you may want to only allow PRs for stories that are in `To Do`/`Planning`/`In Progress` states.
+**Why validate issue status?**
+In some cases, one may be pushing changes for a story that is set to
+`Done`/`Completed` or it may not have been pulled into working backlog or
+current sprint.
+
+This option allows discouraging pushing to branches for stories that are set to
+statuses other than the ones allowed in the project; for example - you may want
+to only allow PRs for stories that are in `To Do`/`Planning`/`In Progress`
+states.
 
 The following flags can be used to validate issue status:
 - `validate-issue-status`
@@ -119,20 +111,23 @@ The following flags can be used to validate issue status:
   - This will only be used when `validate-issue-status` is `true`. This should be a comma separated list of statuses. If the detected issue's status is not in one of the `allowed-issue-statuses` then `action-jira-linter` will fail the status check.
 
 **Example of invalid status**
-  <p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>
-      <table>
-        <tr>
-            <th>Detected Status</th>
-            <td>${issueStatus}</td>
-            <td>:x:</td>
+
+```html
+<p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>
+    <table>
+      <tr>
+          <th>Detected Status</th>
+          <td>${issueStatus}</td>
+          <td>:x:</td>
+      </tr>
+      <tr>
+          <th>Allowed Statuses</th>
+          <td>${allowedStatuses}</td>
+          <td>:heavy_check_mark:</td>
         </tr>
-        <tr>
-            <th>Allowed Statuses</th>
-            <td>${allowedStatuses}</td>
-            <td>:heavy_check_mark:</td>
-          </tr>
-      </table>
-  <p>Please ensure your jira story is in one of the allowed statuses</p>
+    </table>
+<p>Please ensure your jira story is in one of the allowed statuses</p>
+```
 
 #### Soft-validations via comments
 
@@ -173,7 +168,7 @@ The following flags can be used to validate issue status:
 A full example with all available options and example values is provided below.
 
 ```yml
-- uses: btwrk/action-jira-linter@main
+- uses: btwrk/action-jira-linter@v1.0.0
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     jira-token: ${{ secrets.JIRA_TOKEN }}
@@ -220,9 +215,9 @@ will work for all sets of branches you want to ignore. This is useful for
 merging protected/default branches into other branches. Check out some [examples
 in the tests][example].
 
-`action-jira-linter` already skips PRs which are filed by bots (for eg. [dependabot]).
-You can add more bots to [this list][bot-pattern], or add the branch-format
-followed by the bot PRs to the `skip-branches` option.
+`action-jira-linter` already skips PRs which are filed by bots (for eg.
+[dependabot]). You can add more bots to [this list][bot-pattern], or add the
+branch-format followed by the bot PRs to the `skip-branches` option.
 
 ## Contributing
 
@@ -249,7 +244,7 @@ The key is required in order to:
 
 ## Contributors
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks goes to these wonderful people ([emoji key][emoji-key]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -283,6 +278,7 @@ kind welcome!
 [codecov]: https://codecov.io/gh/btwrk/action-jira-linter
 [codeql-badge]: https://github.com/btwrk/action-jira-linter/workflows/CodeQL/badge.svg
 [dependabot]: https://github.com/dependabot/dependabot-core
+[emoji-key]: https://allcontributors.org/docs/en/emoji-key
 [example]: https://github.com/btwrk/action-jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/__tests__/utils.test.ts#L33-L44
 [generate-jira-token]: https://confluence.atlassian.com/cloud/api-tokens-938839638.html
 [ghtoken]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
