@@ -38,10 +38,9 @@ export class GitHub {
   /** Update a PR details. */
   updatePrDetails = async (prData: PullRequestUpdateParams): Promise<void> => {
     try {
+      const { owner, repo, pullRequestNumber, body } = prData;
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { owner, repo, pullRequestNumber: pull_number } = prData;
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      await this.client.pulls.update({ owner, repo, pull_number });
+      await this.client.pulls.update({ owner, repo, pull_number: pullRequestNumber, body });
     } catch (error) {
       console.error(error);
       // eslint-disable-next-line i18n-text/no-en
@@ -166,7 +165,7 @@ export class GitHub {
    */
   static shouldUpdatePRDescription = (
     /** The PR description/body as a string. */
-    body?: string
+    body: string | null
   ): boolean => {
     if (typeof body === 'string' && body != null && body !== undefined) {
       // Check if the body contains the hidden marker and return false

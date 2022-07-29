@@ -102,6 +102,7 @@ some actual content'
   });
 
   it('should return true when the hidden marker is NOT present', () => {
+    expect(GitHub.shouldUpdatePRDescription(null)).toBeTruthy();
     expect(GitHub.shouldUpdatePRDescription('')).toBeTruthy();
     expect(GitHub.shouldUpdatePRDescription('added_by')).toBeTruthy();
     expect(GitHub.shouldUpdatePRDescription('added_by_something_else')).toBeTruthy();

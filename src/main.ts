@@ -152,13 +152,13 @@ async function run(): Promise<void> {
       if (GitHub.shouldUpdatePRDescription(prBody)) {
         console.log('Updating PR description…', prBody);
 
-        const body: string = Jira.getPRDescription(prBody, details);
+        const description: string = Jira.getPRDescription(prBody, details);
 
         const prData: PullRequestUpdateParams = {
           owner,
           repo,
           pullRequestNumber: prNumber,
-          body,
+          body: description,
         };
         await gh.updatePrDetails(prData);
 

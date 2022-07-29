@@ -96,7 +96,7 @@ export class Jira {
   };
 
   /** Get PR description with story/issue details. */
-  static getPRDescription = (body: string, details: JIRADetails): string => {
+  static getPRDescription = (body: string | null, details: JIRADetails): string => {
     const displayKey = details.key.toUpperCase();
 
     let description = `
