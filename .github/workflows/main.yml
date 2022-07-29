@@ -1,0 +1,24 @@
+name: main
+on:
+  push:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      branch_name: feature/dx-1905_${{ github.ref }}
+    steps:
+      - name: checkout jira-linter-test
+        uses: actions/checkout@v3
+        with:
+          repository: btwrk/jira-linter-test
+          ref: main
+          token: ${{ secrets.GH_JIRA_TEST_TOKEN }}
+      - name: create branch
+        run: git checkout -b "${branch_name}"
+      - name: commit content
+        run: echo "${{ github.ref }}" >> README.md
+      - name: push
+        run: git push --set-upstream origin "${branch_name}"
+      - name: create pull request
+        run: gh pr create --title "Test"
