@@ -14,6 +14,7 @@ jobs:
         with:
           repository: btwrk/jira-linter-test
           ref: main
+          token: ${{ secrets.GH_JIRA_TEST_TOKEN }}
       - name: create branch
         run: git checkout -b "${branch_name}"
       - name: commit content
