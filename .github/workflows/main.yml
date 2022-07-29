@@ -6,13 +6,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
+      repo: btwrk/jira-linter-test
       branch_name: feature/dx-1905_${{ github.sha }}
       GH_TOKEN: ${{ secrets.GH_JIRA_TEST_TOKEN }}
     steps:
       - name: checkout jira-linter-test
         uses: actions/checkout@v3
         with:
-          repository: btwrk/jira-linter-test
+          repository: ${{ env.repo }}
           ref: main
           token: ${{ env.GH_TOKEN }}
       - name: configure git
@@ -28,4 +29,6 @@ jobs:
       - name: push
         run: git push --set-upstream origin "${branch_name}"
       - name: create pull request
-        run: gh pr create --title "Test" --body " "
+        run: gh pr create --title "Test for GitHub Actions" --body " "
+      - name: wait
+        run: gh run watch --exit-status --repo "$repo"
