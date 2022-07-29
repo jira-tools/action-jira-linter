@@ -6,7 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      branch_name: feature/dx-1905_${{ github.ref }}
+      branch_name: feature/dx-1905_${{ github.sha }}
       GH_TOKEN: ${{ secrets.GH_JIRA_TEST_TOKEN }}
     steps:
       - name: checkout jira-linter-test
@@ -22,9 +22,9 @@ jobs:
       - name: create branch
         run: git checkout -b "${branch_name}"
       - name: create content
-        run: echo "${{ github.ref }}" >> README.md
+        run: echo "${{ github.sha }}" >> README.md
       - name: commit content
-        run: git commit -am "Added ${{ github.ref }}"
+        run: git commit -am "Added ${{ github.sha }}"
       - name: push
         run: git push --set-upstream origin "${branch_name}"
       - name: create pull request
