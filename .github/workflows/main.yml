@@ -17,8 +17,10 @@ jobs:
           token: ${{ secrets.GH_JIRA_TEST_TOKEN }}
       - name: create branch
         run: git checkout -b "${branch_name}"
-      - name: commit content
+      - name: create content
         run: echo "${{ github.ref }}" >> README.md
+      - name: commit content
+        run: git commit -am "Added ${{ github.ref }}"
       - name: push
         run: git push --set-upstream origin "${branch_name}"
       - name: create pull request
