@@ -46,7 +46,7 @@ jobs:
   action-jira-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: btwrk/action-jira-linter@v1.0.0
+      - uses: btwrk/action-jira-linter@v1.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           jira-token: ${{ secrets.JIRA_TOKEN }}
@@ -168,7 +168,7 @@ The following flags can be used to validate issue status:
 A full example with all available options and example values is provided below.
 
 ```yml
-- uses: btwrk/action-jira-linter@v1.0.0
+- uses: btwrk/action-jira-linter@v1.0.1
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     jira-token: ${{ secrets.JIRA_TOKEN }}
