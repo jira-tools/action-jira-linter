@@ -14,7 +14,7 @@ jobs:
         with:
           repository: btwrk/jira-linter-test
           ref: main
-          token: $GH_TOKEN
+          token: ${{ env.GH_TOKEN }}
       - name: configure git
         run: |
           git config --global user.email "jira-linter@example.com"
