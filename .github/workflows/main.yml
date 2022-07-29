@@ -15,6 +15,10 @@ jobs:
           repository: btwrk/jira-linter-test
           ref: main
           token: $GH_TOKEN
+      - name: configure git
+        run: |
+          git config --global user.email "jira-linter@example.com"
+          git config --global user.name "jira-linter"
       - name: create branch
         run: git checkout -b "${branch_name}"
       - name: create content
