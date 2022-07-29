@@ -3,7 +3,7 @@
 > A light-weight lint workflow to unite the worlds of GitHub and [Jira][jira].
 > Based on the fine work of [ClearTax][cleartax] on [jira-lint].
 
-![GitHub package.json version][package-version]
+[![Latest release][latest-release-badge]][latest-release]
 [![License][license-badge]][license]
 [![All Contributors][all-contributors-badge]](#contributors)
 ![test][test-badge]
@@ -288,9 +288,10 @@ kind welcome!
 [jira-lint]: https://github.com/ClearTax/jira-lint
 [jira-permissions]: https://developer.atlassian.com/cloud/jira/platform/rest/v3/?utm_source=%2Fcloud%2Fjira%2Fplatform%2Frest%2F&utm_medium=302#api-rest-api-3-issue-issueIdOrKey-get
 [jira]: https://www.atlassian.com/software/jira
+[latest-release-badge]: https://img.shields.io/github/v/release/btwrk/jira-linter
+[latest-release]: https://github.com/btwrk/action-jira-linter/releases/latest
 [license-badge]: https://img.shields.io/github/license/btwrk/action-jira-linter
 [license]: https://opensource.org/licenses/MIT
-[package-version]: https://img.shields.io/github/package-json/v/btwrk/action-jira-linter?style=flat-square
 [pivotal-lint]: https://github.com/ClearTax/pivotal-lint/
 [releases]: https://github.com/btwrk/action-jira-linter/releases
 [secrets]: https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
