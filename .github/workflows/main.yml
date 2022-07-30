@@ -22,17 +22,18 @@ jobs:
           git config --global user.name "jira-linter"
       - name: create branch
         run: git checkout -b "${branch_name}"
-      - name: create content
-        run: echo "${{ github.sha }}" >> README.md
+      - name: rename workflow
+        run: |
+          sed "1 name: jira-linter-${{ github.sha }}" .github/workflows/jira-linter.yml
       - name: commit content
-        run: git commit -am "Added ${{ github.sha }}"
+        run: git commit -am "Renamed workflow to jira-linter-${{ github.sha }}"
       - name: push
         run: git push --set-upstream origin "${branch_name}"
       - name: create pull request
         run: gh pr create --title "Test for GitHub Actions" --body " "
       - name: list runs
-        run: gh run list --repo "${repo}" --json databaseId --jq .[].databaseId > runs.txt && cat runs.txt
+        run: gh run list --repo "${repo}"
       - name: watch runs
-        run:  cat runs.txt | while read id; do gh run watch "${id}" --exit-status --repo "${repo}"; done;
+        run:  gh run list --repo "${repo}" --json databaseId --jq .[].databaseId | while read id; do gh run watch "${id}" --exit-status --repo "${repo}"; done;
       - name: cleanup
         run: git push origin --delete "${branch_name}"
