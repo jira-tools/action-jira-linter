@@ -32,3 +32,5 @@ jobs:
         run: gh pr create --title "Test for GitHub Actions" --body " "
       - name: watch runs
         run: gh run list --repo "${repo}" --json databaseId --jq .[].databaseId | while read id; do gh run watch "${id}" --exit-status --repo "${repo}"; done;
+      - name: cleanup
+        run: git push origin --delete "${branch_name}"
