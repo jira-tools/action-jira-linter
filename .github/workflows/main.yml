@@ -6,7 +6,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      repo: btwrk/jira-linter-test
+      repo: btwrk/action-jira-linter-test
       branch_name: feature/dx-1905_${{ github.sha }}
       GH_TOKEN: ${{ secrets.GH_JIRA_TEST_TOKEN }}
     steps:
