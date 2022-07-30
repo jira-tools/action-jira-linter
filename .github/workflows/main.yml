@@ -24,7 +24,7 @@ jobs:
         run: git checkout -b "${branch_name}"
       - name: rename workflow
         run: |
-          sed "1 name: jira-linter-${{ github.sha }}" .github/workflows/jira-linter.yml
+          sed -i.bak 's/name: jira-linter/name: jira-linter-${{ github.sha }}/' .github/workflows/jira-linter.yml
       - name: commit content
         run: git commit -am "Renamed workflow to jira-linter-${{ github.sha }}"
       - name: push
