@@ -48,7 +48,7 @@
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
-    "@types/jest": "^28.1.6",
+    "@types/jest": "^28.1.7",
     "@types/lodash": "^4.14.182",
     "@types/node": "^18.7.3",
     "@types/string-similarity": "^4.0.0",
