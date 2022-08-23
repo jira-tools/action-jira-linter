@@ -96,10 +96,20 @@ export class Jira {
   };
 
   /** Get PR description with story/issue details. */
-  static getPRDescription = (body: string | null, details: JIRADetails): string => {
+  static getPRDescription = (body: string | null, details: JIRADetails, skipJiraTable: boolean): string => {
     const displayKey = details.key.toUpperCase();
 
-    let description = `
+    let description;
+    console.log(`Skip jira table -> ${skipJiraTable}`);
+    if (skipJiraTable) {
+      description = `
+<summary><a href="${details.url}" title="${displayKey}" target="_blank">${displayKey}</a></summary>
+<!--
+  do not remove this marker as it will break action-jira-linter's functionality.
+  ${HIDDEN_MARKER}
+-->`;
+    } else {
+      description = `
 <details open>
   <summary><a href="${details.url}" title="${displayKey}" target="_blank">${displayKey}</a></summary>
   <br />
@@ -133,6 +143,7 @@ export class Jira {
   do not remove this marker as it will break action-jira-linter's functionality.
   ${HIDDEN_MARKER}
 -->`;
+    }
 
     if (body !== undefined && body !== null && body.trim() !== '') {
       description += `

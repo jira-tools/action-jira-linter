@@ -64,7 +64,7 @@ describe('getPRDescription()', () => {
   };
 
   it('should include the hidden marker when getting PR description', () => {
-    const description = Jira.getPRDescription('some_body', issue);
+    const description = Jira.getPRDescription('some_body', issue, false);
 
     expect(GitHub.shouldUpdatePRDescription(description)).toBeFalsy();
     expect(description).toContain(issue.key);
@@ -73,8 +73,17 @@ describe('getPRDescription()', () => {
     expect(description).toContain(issue.labels[0].name);
   });
 
+  it('should skip jira table when getting PR description', () => {
+    const description = Jira.getPRDescription('some_body', issue, true);
+
+    expect(GitHub.shouldUpdatePRDescription(description)).toBeFalsy();
+    expect(description).toContain(issue.key);
+    expect(description).not.toContain(issue.status);
+    expect(description).not.toContain(issue.labels[0].name);
+  });
+
   it('should work with null description', () => {
-    const description = Jira.getPRDescription(null, issue);
+    const description = Jira.getPRDescription(null, issue, false);
 
     expect(description).toContain(issue.key);
     expect(description).toContain(issue.estimate.toString());
