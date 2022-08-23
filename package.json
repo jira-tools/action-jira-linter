@@ -50,7 +50,7 @@
   "devDependencies": {
     "@types/jest": "^28.1.7",
     "@types/lodash": "^4.14.184",
-    "@types/node": "^18.7.9",
+    "@types/node": "^18.7.10",
     "@types/string-similarity": "^4.0.0",
     "@typescript-eslint/parser": "^5.34.0",
     "@zeit/ncc": "^0.22.3",
