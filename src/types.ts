@@ -145,6 +145,7 @@ export interface JIRALintActionInputs {
   githubToken: string;
   branchIgnorePattern: string;
   skipComments: boolean;
+  skipJiraTable: boolean;
   prThreshold: number;
   validateIssueStatus: boolean;
   allowedIssueStatuses: string[];

@@ -22,6 +22,10 @@ inputs:
     description: 'A boolean if set to true, will skip adding lint comments for PR title.'
     required: false
     default: false
+  skip-jira-table:
+    description: 'A boolean if set to true, will skip adding jira details in PR description.'
+    required: false
+    default: false
   pr-threshold:
     description: 'An `Integer` based on which action-jira-linter add a comment discouraging huge PRs. Is disabled by `skip-comments`'
     required: false

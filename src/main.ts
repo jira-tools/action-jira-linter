@@ -24,6 +24,7 @@ const getInputs = (): JIRALintActionInputs => {
   });
   const branchIgnorePattern: string = core.getInput('skip-branches', { required: false }) || '';
   const skipComments: boolean = core.getInput('skip-comments', { required: false }) === 'true';
+  const skipJiraTable: boolean = core.getInput('skip-jira-table', { required: false }) === 'true';
   const prThreshold = parseInt(core.getInput('pr-threshold', { required: false }), 10);
   const validateIssueStatus: boolean = core.getInput('validate-issue-status', { required: false }) === 'true';
   const allowedIssueStatuses: string[] = core.getMultilineInput('allowed-issue-statuses');
@@ -35,6 +36,7 @@ const getInputs = (): JIRALintActionInputs => {
     githubToken,
     branchIgnorePattern,
     skipComments,
+    skipJiraTable,
     prThreshold: isNaN(prThreshold) ? DEFAULT_PR_ADDITIONS_THRESHOLD : prThreshold,
     jiraBaseURL: jiraBaseURL.endsWith('/') ? jiraBaseURL.replace(/\/$/, '') : jiraBaseURL,
     validateIssueStatus,
@@ -52,6 +54,7 @@ async function run(): Promise<void> {
       githubToken,
       branchIgnorePattern,
       skipComments,
+      skipJiraTable,
       prThreshold,
       validateIssueStatus,
       allowedIssueStatuses,
@@ -152,7 +155,7 @@ async function run(): Promise<void> {
       if (GitHub.shouldUpdatePRDescription(prBody)) {
         console.log('Updating PR description…', prBody);
 
-        const description: string = Jira.getPRDescription(prBody, details);
+        const description: string = Jira.getPRDescription(prBody, details, skipJiraTable);
 
         const prData: PullRequestUpdateParams = {
           owner,
