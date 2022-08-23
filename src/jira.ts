@@ -101,7 +101,7 @@ export class Jira {
 
     let description;
     console.log(`Skip jira table -> ${skipJiraTable}`);
-    if(skipJiraTable) {
+    if (skipJiraTable) {
       description = `
 <summary><a href="${details.url}" title="${displayKey}" target="_blank">${displayKey}</a></summary>
 <!--
