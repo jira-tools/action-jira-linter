@@ -103,7 +103,7 @@ export class Jira {
     console.log(`Skip jira table -> ${skipJiraTable}`);
     if(skipJiraTable) {
       description = `
-  <summary><a href="${details.url}" title="${displayKey}" target="_blank">${displayKey}</a></summary>
+<summary><a href="${details.url}" title="${displayKey}" target="_blank">${displayKey}</a></summary>
 <!--
   do not remove this marker as it will break action-jira-linter's functionality.
   ${HIDDEN_MARKER}
