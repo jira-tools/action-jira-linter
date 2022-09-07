@@ -79,8 +79,10 @@ export class Jira {
         estimate: typeof estimate === 'string' || typeof estimate === 'number' ? estimate : 'N/A',
         labels,
       };
-    } catch (e) {
-      throw e;
+    } catch (error) {
+      console.log('The JIRA issue key' + key + 'is not valid');
+      console.log({ error });
+      process.exit(1);
     }
   };
 

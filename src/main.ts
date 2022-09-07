@@ -142,15 +142,8 @@ async function run(): Promise<void> {
     const issueKey = issueKeys[issueKeys.length - 1];
     console.log(`JIRA key -> ${issueKey}`);
 
-    let details: JIRADetails|null = null;
-    try {
-      details = await jira.getTicketDetails(issueKey);
-    } catch (error) {
-      console.log('The JIRA issue key' + issueKey + 'is not valid');
-      console.log({ error });
-      process.exit(1);
-    }
-    if (details && details?.key) {
+    const details: JIRADetails = await jira.getTicketDetails(issueKey);
+    if (details.key) {
       const podLabel: string = details?.project?.name || '';
       const hotfixLabel: string = GitHub.getHotfixLabel(baseBranch);
       const typeLabel: string = details?.type?.name || '';
