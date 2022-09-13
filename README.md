@@ -222,6 +222,8 @@ branch-format followed by the bot PRs to the `skip-branches` option.
 ## Contributing
 
 Follow the instructions [here][help-action] to know more about GitHub actions.
+Before committing a change - ensure that `npm run all` has been executed and the
+built js files are pushed to the repository as well.
 
 ## FAQ
 
