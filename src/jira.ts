@@ -80,7 +80,7 @@ export class Jira {
         labels,
       };
     } catch (error) {
-      console.log(`The JIRA issue key${key}is not valid`);
+      console.log(`The JIRA issue key ${key} is not valid`);
       console.log({ error });
       process.exit(1);
     }
