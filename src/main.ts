@@ -139,14 +139,29 @@ async function run(): Promise<void> {
     }
 
     // use the last match (end of the branch name)
-    const issueKey = issueKeys[issueKeys.length - 1];
-    console.log(`JIRA key -> ${issueKey}`);
+    let issueKey = null;
+    let details: JIRADetails | null = null;
 
-    const details: JIRADetails = await jira.getTicketDetails(issueKey);
-    if (details.key) {
-      const podLabel: string = details?.project?.name || '';
+    for (const key of issueKeys) {
+      details = await jira.getTicketDetails(key);
+
+      // if the details is present then no need to iterate firther
+      if (details) {
+        issueKey = key;
+        break;
+      }
+    }
+
+    // If none of the Issuekeys are valid then exit the process
+    if (!details) {
+      return exit('JIRA issue id is not valid in the branch name.');
+    }
+
+    console.log(`JIRA key -> ${issueKey}`);
+    if (details['key']) {
+      const podLabel: string = details['project']['name'] || '';
       const hotfixLabel: string = GitHub.getHotfixLabel(baseBranch);
-      const typeLabel: string = details?.type?.name || '';
+      const typeLabel: string = details['type']['name'] || '';
       const labels: string[] = [podLabel, hotfixLabel, typeLabel].filter((l) => l != null && l.length > 0);
       console.log('Adding lables -> ', labels);
 
@@ -167,7 +182,7 @@ async function run(): Promise<void> {
 
         // add comment for PR title
         if (!skipComments) {
-          const prTitleCommentBody = gh.getPRTitleComment(details.summary, title);
+          const prTitleCommentBody = gh.getPRTitleComment(details['summary'], title);
           const prTitleComment = { ...commonPayload, body: prTitleCommentBody };
           console.log('Adding comment for the PR title');
           gh.addComment(prTitleComment);
@@ -185,7 +200,7 @@ async function run(): Promise<void> {
       }
 
       if (!Jira.isIssueStatusValid(validateIssueStatus, allowedIssueStatuses, details)) {
-        const body = Jira.getInvalidIssueStatusComment(details.status, allowedIssueStatuses);
+        const body = Jira.getInvalidIssueStatusComment(details['status'], allowedIssueStatuses);
         const invalidIssueStatusComment = { ...commonPayload, body };
         console.log('Adding comment for invalid issue status');
         await gh.addComment(invalidIssueStatusComment);

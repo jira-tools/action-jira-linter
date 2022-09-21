@@ -41,7 +41,7 @@ export class Jira {
     });
   };
 
-  getTicketDetails = async (key: string): Promise<JIRADetails> => {
+  getTicketDetails = async (key: string): Promise<JIRADetails | null> => {
     try {
       const issue: JIRA.Issue = await this.getIssue(key);
       const {
@@ -80,9 +80,8 @@ export class Jira {
         labels,
       };
     } catch (error) {
-      console.log(`The JIRA issue key ${key} is not valid`);
-      console.log({ error });
-      process.exit(1);
+      console.log(`The JIRA issue key ${key} is not valid. `);
+      return null;
     }
   };
 
