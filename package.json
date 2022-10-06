@@ -54,7 +54,7 @@
     "@types/string-similarity": "^4.0.0",
     "@typescript-eslint/parser": "^5.39.0",
     "@zeit/ncc": "^0.22.3",
-    "axios": "^0.27.2",
+    "axios": "^1.0.0",
     "engines-ok": "^1.2.0",
     "eslint": "^8.24.0",
     "eslint-plugin-github": "^4.3.7",
