@@ -44,7 +44,7 @@
   "dependencies": {
     "@actions/core": "^1.9.0",
     "@actions/github": "^5.0.3",
-    "@octokit/rest": "^19.0.3",
+    "@octokit/rest": "^19.0.7",
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
