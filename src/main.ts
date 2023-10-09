@@ -113,7 +113,7 @@ async function run(): Promise<void> {
         ...commonPayload,
         body: commentBody,
       };
-      await gh.addComment(comment);
+      await gh.upsertComment('unable-to-determine-base-branch', comment);
 
       // eslint-disable-next-line i18n-text/no-en
       return exit('Unable to get the head and base branch.');
@@ -130,7 +130,7 @@ async function run(): Promise<void> {
     if (!issueKeys.length) {
       const body = Jira.getNoIdComment(headBranch);
       const comment = { ...commonPayload, body };
-      await gh.addComment(comment);
+      await gh.upsertComment('no-id', comment);
 
       return exit('JIRA issue id is missing in your branch.');
     }
@@ -167,14 +167,14 @@ async function run(): Promise<void> {
           const prTitleCommentBody = gh.getPRTitleComment(details.summary, title);
           const prTitleComment = { ...commonPayload, body: prTitleCommentBody };
           console.log('Adding comment for the PR title');
-          gh.addComment(prTitleComment);
+          gh.upsertComment('pr-title', prTitleComment);
 
           // add a comment if the PR is huge
           if (GitHub.isHumongousPR(additions, threshold)) {
             const hugePrCommentBody = GitHub.getHugePrComment(additions, threshold);
             const hugePrComment = { ...commonPayload, body: hugePrCommentBody };
             console.log('Adding comment for huge PR');
-            gh.addComment(hugePrComment);
+            gh.upsertComment('huge-pr', hugePrComment);
           }
         }
       } else {
@@ -185,7 +185,7 @@ async function run(): Promise<void> {
         const body = Jira.getInvalidIssueStatusComment(details.status, allowedIssueStatuses);
         const invalidIssueStatusComment = { ...commonPayload, body };
         console.log('Adding comment for invalid issue status');
-        await gh.addComment(invalidIssueStatusComment);
+        await gh.upsertComment('invalid-issue-status', invalidIssueStatusComment);
 
         // eslint-disable-next-line i18n-text/no-en
         return exit('The found jira issue does is not in acceptable statuses');
@@ -195,7 +195,7 @@ async function run(): Promise<void> {
     } else {
       const body = Jira.getNoIdComment(headBranch);
       const comment = { ...commonPayload, body };
-      await gh.addComment(comment);
+      await gh.upsertComment('no-id', comment);
 
       // eslint-disable-next-line i18n-text/no-en
       return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key.');
