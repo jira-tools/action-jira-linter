@@ -54,7 +54,7 @@ export class GitHub {
     try {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       const { owner, repo, issue: issue_number } = comment;
-      const fullTag = `<!-- ${tag} -->`;
+      const fullTag = `<!-- jira-lint-${tag} -->`;
       const body = `${fullTag}\n${comment.body}`;
 
       const { data: existingComments } = await this.client.rest.issues.listComments({
