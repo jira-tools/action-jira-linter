@@ -20,8 +20,8 @@
     "url": "git+https://github.com/btwrk/action-jira-linter"
   },
   "engines": {
-    "node": ">= 13",
-    "npm": ">= 6"
+    "node": ">= 18",
+    "npm": ">= 8"
   },
   "keywords": [
     "actions",
@@ -45,6 +45,7 @@
     "@actions/core": "^1.9.0",
     "@actions/github": "^5.0.3",
     "@octokit/rest": "^19.0.3",
+    "ncc": "^0.3.6",
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
@@ -53,7 +54,7 @@
     "@types/node": "^18.11.2",
     "@types/string-similarity": "^4.0.0",
     "@typescript-eslint/parser": "^5.40.1",
-    "@zeit/ncc": "^0.22.3",
+    "@vercel/ncc": "^0.38.0",
     "axios": "^0.27.2",
     "engines-ok": "^1.2.0",
     "eslint": "^8.25.0",
