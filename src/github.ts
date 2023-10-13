@@ -50,17 +50,38 @@ export class GitHub {
   };
 
   /** Add a comment to a PR. */
-  addComment = async (comment: CreateIssueCommentParams): Promise<void> => {
+  upsertComment = async (tag: string, comment: CreateIssueCommentParams): Promise<void> => {
     try {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { owner, repo, issue: issue_number, body } = comment;
-      await this.client.issues.createComment({
+      const { owner, repo, issue: issue_number } = comment;
+      const fullTag = `<!-- jira-lint-${tag} -->`;
+      const body = `${fullTag}\n${comment.body}`;
+
+      const { data: existingComments } = await this.client.rest.issues.listComments({
         owner,
         repo,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         issue_number,
-        body,
       });
+
+      const existingComment = existingComments.find((c) => c.body?.includes(fullTag));
+      if (existingComment) {
+        await this.client.rest.issues.updateComment({
+          owner,
+          repo,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          comment_id: existingComment.id,
+          body,
+        });
+      } else {
+        await this.client.issues.createComment({
+          owner,
+          repo,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          issue_number,
+          body,
+        });
+      }
     } catch (error) {
       console.error(error);
       // eslint-disable-next-line i18n-text/no-en

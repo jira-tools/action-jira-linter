@@ -35,14 +35,14 @@ inputs:
       A line-separated list of acceptable Jira issue statuses. You must provide a value for this if validate-issue-status is set to true
       Requires validate-issue-status to be set to true.
     required: false
-    default: "In Progress"
+    default: 'In Progress'
   fail-on-error:
     description: 'Set this to true if you want action-jira-linter to fail the PR if it encounters an error'
     required: false
     default: true
 
 runs:
-  using: 'node12'
+  using: node20
   main: 'lib/index.js'
 branding:
   icon: 'check-square'
