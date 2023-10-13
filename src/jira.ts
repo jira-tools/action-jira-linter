@@ -31,13 +31,13 @@ export class Jira {
     } else return [];
   };
 
-  private getJIRAClient = (baseURL: string, username: string, token: string): AxiosInstance => {
-    const credentials = `${username}:${token}`;
-    const authorization = Buffer.from(credentials).toString('base64');
+  private getJIRAClient = (baseURL: string, _username: string, token: string): AxiosInstance => {
+    // const credentials = `${username}:${token}`;
+    // const authorization = Buffer.from(credentials).toString('base64');
     return axios.create({
       baseURL: `${baseURL}/rest/api/3`,
       timeout: 2000,
-      headers: { authorization: `Basic ${authorization}` },
+      headers: { authorization: `Basic ${token}` },
     });
   };
 
