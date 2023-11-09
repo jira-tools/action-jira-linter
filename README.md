@@ -92,6 +92,7 @@ description.
 </figure>
 
 #### Issue Status Validation
+
 Issue status is shown in the [Description](#description).
 
 **Why validate issue status?**
@@ -105,6 +106,7 @@ to only allow PRs for stories that are in `To Do`/`Planning`/`In Progress`
 states.
 
 The following flags can be used to validate issue status:
+
 - `validate-issue-status`
   - If set to `true`, `action-jira-linter` will validate the issue status based on `allowed-issue-statuses`
 - `allowed-issue-statuses`
@@ -113,19 +115,19 @@ The following flags can be used to validate issue status:
 **Example of invalid status**
 
 ```html
-<p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart: </p>
-    <table>
-      <tr>
-          <th>Detected Status</th>
-          <td>${issueStatus}</td>
-          <td>:x:</td>
-      </tr>
-      <tr>
-          <th>Allowed Statuses</th>
-          <td>${allowedStatuses}</td>
-          <td>:heavy_check_mark:</td>
-        </tr>
-    </table>
+<p>:broken_heart: The detected issue is not in one of the allowed statuses :broken_heart:</p>
+<table>
+  <tr>
+    <th>Detected Status</th>
+    <td>${issueStatus}</td>
+    <td>:x:</td>
+  </tr>
+  <tr>
+    <th>Allowed Statuses</th>
+    <td>${allowedStatuses}</td>
+    <td>:heavy_check_mark:</td>
+  </tr>
+</table>
 <p>Please ensure your jira story is in one of the allowed statuses</p>
 ```
 
@@ -186,15 +188,16 @@ A full example with all available options and example values is provided below.
 
 | Key                      | Description                                                                                                                                                                                                                                             | Required | Default         |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: | --------------- |
-| `github-token`           | Token used to update PR description. `GITHUB_TOKEN` is already available [when you use GitHub actions][ghtoken], so all that is required is to pass it as a param here.                                                                                 |     x    | `null`          |
-| `jira-token`             | Token used to fetch Jira Issue information.  Check [below](#jira-token) for more details on how to generate the token.                                                                                                                                  |     x    | `null`          |
-| `jira-base-url`          | The subdomain of JIRA cloud that you use to access it. Ex: `https://your-domain.atlassian.net`.                                                                                                                                                         |     x    | `null`          |
-| `skip-branches`          | A regex to ignore running `action-jira-linter` on certain branches, like production etc.                                                                                                                                                                       |          | `''`            |
-| `skip-comments`          | A `Boolean` if set to `true` then `action-jira-linter` will skip adding lint comments for PR title.                                                                                                                                                            |          | `false`         |
-| `pr-threshold`           | An `Integer` based on which `action-jira-linter` will add a comment discouraging huge PRs.                                                                                                                                                                     |          | `800`           |
-| `validate-issue-status`  | A `Boolean` based on which `action-jira-linter` will validate the status of the detected jira issue                                                                                                                                                            |          | `false`         |
+| `github-token`           | Token used to update PR description. `GITHUB_TOKEN` is already available [when you use GitHub actions][ghtoken], so all that is required is to pass it as a param here.                                                                                 |    x     | `null`          |
+| `jira-token`             | Token used to fetch Jira Issue information. Check [below](#jira-token) for more details on how to generate the token.                                                                                                                                   |    x     | `null`          |
+| `jira-base-url`          | The subdomain of JIRA cloud that you use to access it. Ex: `https://your-domain.atlassian.net`.                                                                                                                                                         |    x     | `null`          |
+| `skip-branches`          | A regex to ignore running `action-jira-linter` on certain branches, like production etc.                                                                                                                                                                |          | `''`            |
+| `skip-comments`          | A `Boolean` if set to `true` then `action-jira-linter` will skip adding lint comments for PR title.                                                                                                                                                     |          | `false`         |
+| `pr-threshold`           | An `Integer` based on which `action-jira-linter` will add a comment discouraging huge PRs.                                                                                                                                                              |          | `800`           |
+| `validate-issue-status`  | A `Boolean` based on which `action-jira-linter` will validate the status of the detected jira issue                                                                                                                                                     |          | `false`         |
 | `allowed-issue-statuses` | A line-separated list of acceptable Jira issue statuses. The detected jira issue's status will be compared against this list and if a match is not found then the status check will fail. _Note_: Requires `validate-issue-status` to be set to `true`. |          | `'In Progress'` |
 | `fail-on-error`          | A `Boolean` which, if set to `true`, fails the GitHub Action when an error occurs. Default `true`.                                                                                                                                                      |          | `false`         |
+| `ignored-lables`         | A list of label types to ignore. Valid values: `project`, `hotfix`, `type`.                                                                                                                                                                             |          | `''`            |
 
 **Special note on `jira-token`:** Since tokens are private, we suggest adding
 them as [GitHub secrets][secrets].
@@ -263,6 +266,7 @@ Thanks goes to these wonderful people ([emoji key][emoji-key]):
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors] specification. Contributions of any
@@ -273,7 +277,7 @@ kind welcome!
 [bot-pattern]: https://github.com/btwrk/action-jira-linter/blob/08a47ab7a6e2bc235c9e34da1d14eacf9d810bd1/src/constants.ts#L4
 [cleartax]: https://github.com/ClearTax
 [codacy-badge]: https://app.codacy.com/project/badge/Grade/97d96de47b1e47bfa379951251eafe4f
-[codacy]: https://www.codacy.com/gh/btwrk/action-jira-linter/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=btwrk/action-jira-linter&amp;utm_campaign=Badge_Grade
+[codacy]: https://www.codacy.com/gh/btwrk/action-jira-linter/dashboard?utm_source=github.com&utm_medium=referral&utm_content=btwrk/action-jira-linter&utm_campaign=Badge_Grade
 [codecov-badge]: https://codecov.io/gh/btwrk/action-jira-linter/branch/main/graph/badge.svg
 [codecov]: https://codecov.io/gh/btwrk/action-jira-linter
 [codeql-badge]: https://github.com/btwrk/action-jira-linter/workflows/CodeQL/badge.svg
