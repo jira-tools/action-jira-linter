@@ -97,11 +97,11 @@ export class Jira {
   };
 
   /** Get PR description with story/issue details. */
-  static getPRDescription = (body: string | null, details: JIRADetails): string => {
+  static getPRDescription = (body: string | null, details: JIRADetails, open: boolean): string => {
     const displayKey = details.key.toUpperCase();
 
     let description = `
-<details open>
+<details${open ? ' open' : ''}>
   <summary><a href="${details.url}" title="${displayKey}" target="_blank">${displayKey}</a></summary>
   <br />
   <table>

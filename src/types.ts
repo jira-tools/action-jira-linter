@@ -150,6 +150,7 @@ export interface JIRALintActionInputs {
   allowedIssueStatuses: string[];
   failOnError: boolean;
   ignoredLabelTypes: string[];
+  detailsOpen: boolean;
 }
 
 export interface JIRAClient {

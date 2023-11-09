@@ -28,7 +28,8 @@ const getInputs = (): JIRALintActionInputs => {
   const validateIssueStatus: boolean = core.getInput('validate-issue-status', { required: false }) === 'true';
   const allowedIssueStatuses: string[] = core.getMultilineInput('allowed-issue-statuses');
   const failOnError: boolean = core.getInput('fail-on-error', { required: false }) !== 'false';
-  const ignoredLabelTypes: string[] = core.getMultilineInput('ignored-label-types');
+  const ignoredLabelTypes: string[] = core.getMultilineInput('ignored-label-types', { required: false });
+  const detailsOpen: boolean = core.getInput('details-open', { required: false }) !== 'false';
 
   return {
     jiraUser,
@@ -42,6 +43,7 @@ const getInputs = (): JIRALintActionInputs => {
     allowedIssueStatuses,
     failOnError,
     ignoredLabelTypes,
+    detailsOpen,
   };
 };
 
@@ -59,6 +61,7 @@ async function run(): Promise<void> {
       allowedIssueStatuses,
       failOnError,
       ignoredLabelTypes,
+      detailsOpen,
     } = getInputs();
 
     const exit = (message: string): void => {
@@ -159,7 +162,7 @@ async function run(): Promise<void> {
       if (GitHub.shouldUpdatePRDescription(prBody)) {
         console.log('Updating PR description…', prBody);
 
-        const description: string = Jira.getPRDescription(prBody, details);
+        const description: string = Jira.getPRDescription(prBody, details, detailsOpen);
 
         const prData: PullRequestUpdateParams = {
           owner,
