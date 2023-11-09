@@ -28,7 +28,7 @@ const getInputs = (): JIRALintActionInputs => {
   const validateIssueStatus: boolean = core.getInput('validate-issue-status', { required: false }) === 'true';
   const allowedIssueStatuses: string[] = core.getMultilineInput('allowed-issue-statuses');
   const failOnError: boolean = core.getInput('fail-on-error', { required: false }) !== 'false';
-  const ignoredLabels: string[] = core.getMultilineInput('ignored-labels');
+  const ignoredLabelTypes: string[] = core.getMultilineInput('ignored-label-types');
 
   return {
     jiraUser,
@@ -41,7 +41,7 @@ const getInputs = (): JIRALintActionInputs => {
     validateIssueStatus,
     allowedIssueStatuses,
     failOnError,
-    ignoredLabels,
+    ignoredLabelTypes,
   };
 };
 
@@ -58,7 +58,7 @@ async function run(): Promise<void> {
       validateIssueStatus,
       allowedIssueStatuses,
       failOnError,
-      ignoredLabels,
+      ignoredLabelTypes,
     } = getInputs();
 
     const exit = (message: string): void => {
@@ -148,9 +148,9 @@ async function run(): Promise<void> {
       const hotfixLabel: string = GitHub.getHotfixLabel(baseBranch);
       const typeLabel: string = details?.type?.name || '';
       const labels: string[] = [
-        ignoredLabels.includes('project') ? null : podLabel,
-        ignoredLabels.includes('hotfix') ? null : hotfixLabel,
-        ignoredLabels.includes('type') ? null : typeLabel,
+        ignoredLabelTypes.includes('project') ? null : podLabel,
+        ignoredLabelTypes.includes('hotfix') ? null : hotfixLabel,
+        ignoredLabelTypes.includes('type') ? null : typeLabel,
       ].filter(Boolean as unknown as (x: string | null) => x is string);
       console.log('Adding lables -> ', labels);
 
