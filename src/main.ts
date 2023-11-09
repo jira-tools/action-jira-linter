@@ -28,6 +28,7 @@ const getInputs = (): JIRALintActionInputs => {
   const validateIssueStatus: boolean = core.getInput('validate-issue-status', { required: false }) === 'true';
   const allowedIssueStatuses: string[] = core.getMultilineInput('allowed-issue-statuses');
   const failOnError: boolean = core.getInput('fail-on-error', { required: false }) !== 'false';
+  const ignoredLabels: string[] = core.getMultilineInput('ignored-labels');
 
   return {
     jiraUser,
@@ -40,6 +41,7 @@ const getInputs = (): JIRALintActionInputs => {
     validateIssueStatus,
     allowedIssueStatuses,
     failOnError,
+    ignoredLabels,
   };
 };
 
@@ -56,6 +58,7 @@ async function run(): Promise<void> {
       validateIssueStatus,
       allowedIssueStatuses,
       failOnError,
+      ignoredLabels,
     } = getInputs();
 
     const exit = (message: string): void => {
@@ -144,7 +147,11 @@ async function run(): Promise<void> {
       const podLabel: string = details?.project?.name || '';
       const hotfixLabel: string = GitHub.getHotfixLabel(baseBranch);
       const typeLabel: string = details?.type?.name || '';
-      const labels: string[] = [podLabel, hotfixLabel, typeLabel].filter((l) => l != null && l.length > 0);
+      const labels: string[] = [
+        ignoredLabels.includes('project') ? null : podLabel,
+        ignoredLabels.includes('hotfix') ? null : hotfixLabel,
+        ignoredLabels.includes('type') ? null : typeLabel,
+      ].filter(Boolean as unknown as (x: string | null) => x is string);
       console.log('Adding lables -> ', labels);
 
       await gh.addLabels({ ...commonPayload, labels });
