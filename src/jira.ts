@@ -120,18 +120,17 @@ ${body ?? ''}`;
 
   /** Get the comment body for pr with no JIRA id in the branch name. */
   static getNoIdComment = (branch: string): string => {
-    return `<p> A JIRA Issue ID is missing from your branch name! 🦄</p>
-<p>Your branch: ${branch}</p>
-<p>If this is your first time contributing to this repository - welcome!</p>
-<hr />
-<p>Please refer to <a href="https://github.com/btwrk/action-jira-linter">action-jira-linter</a> to get started.
-<p>Without the JIRA Issue ID in your branch name you would lose out on automatic updates to JIRA via SCM; some GitHub status checks might fail.</p>
+    return `A JIRA Issue ID is missing from your branch name! 🦄
+
+Your branch: \`${branch}\`
+
+If this is your first time contributing, refer to <a href="https://github.com/mskelton/action-jira-linter">action-jira-linter</a> to learn more about Jira linting.
+
 Valid sample branch names:
 
-  ‣ feature/shiny-new-feature--mojo-10'
-  ‣ 'chore/changelogUpdate_mojo-123'
-  ‣ 'bugfix/fix-some-strange-bug_GAL-2345'
-`;
+- \`feature/shiny-new-feature--mojo-10\`
+- \`chore/changelogUpdate_mojo-123\`
+- \`bugfix/fix-some-strange-bug_GAL-2345\``;
   };
 
   /** Check if jira issue status validation is enabled then compare the issue status will the allowed statuses. */
