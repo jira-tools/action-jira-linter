@@ -100,49 +100,22 @@ export class Jira {
   static getPRDescription = (body: string | null, details: JIRADetails, open: boolean): string => {
     const displayKey = details.key.toUpperCase();
 
-    let description = `
+    return `
+<!-- ${HIDDEN_MARKER} -->
 <details${open ? ' open' : ''}>
   <summary><a href="${details.url}" title="${displayKey}" target="_blank">${displayKey}</a></summary>
   <br />
   <table>
-    <tr>
-      <th>Summary</th>
-      <td>${details.summary}</td>
+    <tr><th>Summary</th><td>${details.summary}</td></tr>
+    <tr><th>Type</th><td><img alt="${details.type.name}" src="${details.type.icon}" /> ${details.type.name}</td>
     </tr>
-    <tr>
-      <th>Type</th>
-      <td>
-        <img alt="${details.type.name}" src="${details.type.icon}" />
-        ${details.type.name}
-      </td>
-    </tr>
-    <tr>
-      <th>Status</th>
-      <td>${details.status}</td>
-    </tr>
-    <tr>
-      <th>Points</th>
-      <td>${details.estimate || 'N/A'}</td>
-    </tr>
-    <tr>
-      <th>Labels</th>
-      <td>${this.getLabelsForDisplay(details.labels)}</td>
-    </tr>
+    <tr><th>Status</th><td>${details.status}</td></tr>
+    <tr><th>Points</th><td>${details.estimate || 'N/A'}</td></tr>
+    <tr><th>Labels</th><td>${this.getLabelsForDisplay(details.labels)}</td></tr>
   </table>
 </details>
-<!--
-  do not remove this marker as it will break action-jira-linter's functionality.
-  ${HIDDEN_MARKER}
--->`;
 
-    if (body !== undefined && body !== null && body.trim() !== '') {
-      description += `
----
-
-${body}`;
-    }
-
-    return description;
+${body ?? ''}`;
   };
 
   /** Get the comment body for pr with no JIRA id in the branch name. */
