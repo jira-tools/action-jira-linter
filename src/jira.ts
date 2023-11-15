@@ -206,6 +206,43 @@ Valid sample branch names:
 
   };
 
+  /** Check if jira type validation is enabled then compare the issue type with the allowed types. */
+  static isIssueTypeValid = (
+    shouldValidate: boolean,
+    allowedTypes: string[],
+    details: JIRADetails
+  ): boolean => {
+    if (!shouldValidate) {
+      // eslint-disable-next-line i18n-text/no-en
+      core.info('Skipping Jira issue type validation as shouldValidate is false');
+      return true;
+    }
+
+    return allowedTypes.includes(details.type.name);
+  };
+  
+  /** Get the comment body for invalid issue type */
+  static getInvalidIssueTypeComment = (issueType: string, allowedTypes: string[]): string => {
+    const allowedTypesString = allowedTypes.join(', ');
+
+    return `<p>:broken_heart: The detected issue is not an allowed type :broken_heart: </p>
+      <table>
+        <tr>
+            <th>Detected Issue Type</th>
+            <td>${issueType}</td>
+            <td>:x:</td>
+        </tr>
+        <tr>
+            <th>Allowed Issue Types</th>
+            <td>${allowedTypesString}</td>
+            <td>:heavy_check_mark:</td>
+          </tr>
+      </table>
+      <p>Please ensure your jira ticket is created as the right type.</p>
+    `;
+
+  };
+
     /** Reverse a string. */
   private static reverseString = (input: string): string => input.split('').reverse().join('');
 }

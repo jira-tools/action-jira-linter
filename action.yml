@@ -46,6 +46,16 @@ inputs:
       Requires validate-project to be set to true.
     required: false
     default: ''
+  validate-type:
+    description: 'Set this to true if you want action-jira-linter to limit validation to jira issues to a specific type'
+    required: false
+    default: 'false'
+  allowed-types:
+    description: |
+      A line-separated list of acceptable Jira types. You must provide a value for this if validate-type is set to true
+      Requires validate-type to be set to true.
+    required: false
+    default: ''
   fail-on-error:
     description: 'Set this to true if you want action-jira-linter to fail the PR if it encounters an error'
     required: false

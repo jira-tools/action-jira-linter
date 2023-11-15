@@ -183,3 +183,38 @@ describe('getInvalidProjectComment()', () => {
     expect(Jira.getInvalidProjectComment('TST', ['wrongproject'])).toContain('wrongproject');
   });
 });
+
+describe('isIssueTypeValid()', () => {
+  const issue: JIRADetails = {
+    key: 'ABC-123',
+    url: 'url',
+    type: { name: 'feature', icon: 'feature-icon-url' },
+    estimate: 1,
+    labels: [{ name: 'frontend', url: 'frontend-url' }],
+    summary: 'Story title or summary',
+    project: { name: 'project', url: 'project-url', key: 'abc' },
+    status: 'Assessment',
+  };
+
+  it('should return false if issue type validation was enabled but issue type is not in the approvedTypes', () => {
+    const expectedTypes = ['story', 'task'];
+    expect(Jira.isIssueTypeValid(true, expectedTypes, issue)).toBeFalsy();
+  });
+
+  it('should return true if issue type validation was enabled and issue type is in the approvedTypes', () => {
+    const expectedTypes = ['story', 'task', 'feature'];
+    expect(Jira.isIssueTypeValid(true, expectedTypes, issue)).toBeTruthy();
+  });
+
+  it('should return true if issue type validation is not enabled', () => {
+    const expectedTypes = ['story', 'task'];
+    expect(Jira.isIssueTypeValid(false, expectedTypes, issue)).toBeTruthy();
+  });
+});
+
+describe('getInvalidIssueTypeComment()', () => {
+  it('should return content with the passed in issue type and allowed types', () => {
+    expect(Jira.getInvalidIssueTypeComment('story', ['task'])).toContain('story');
+    expect(Jira.getInvalidIssueTypeComment('story', ['task'])).toContain('task');
+  });
+});

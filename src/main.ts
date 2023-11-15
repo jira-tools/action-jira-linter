@@ -29,6 +29,8 @@ const getInputs = (): JIRALintActionInputs => {
   const allowedIssueStatuses: string[] = core.getMultilineInput('allowed-issue-statuses');
   const validateProject: boolean = core.getInput('validate-project', { required: false }) === 'true';
   const allowedProjects: string[] = core.getMultilineInput('allowed-projects');
+  const validateType: boolean = core.getInput('validate-type', { required: false }) === 'true';
+  const allowedTypes: string[] = core.getMultilineInput('allowed-types');
   const failOnError: boolean = core.getInput('fail-on-error', { required: false }) !== 'false';
   const ignoredLabelTypes: string[] = core.getMultilineInput('ignored-label-types', { required: false });
   const detailsOpen: boolean = core.getInput('details-open', { required: false }) !== 'false';
@@ -45,6 +47,8 @@ const getInputs = (): JIRALintActionInputs => {
     allowedIssueStatuses,
     validateProject,
     allowedProjects,
+    validateType,
+    allowedTypes,
     failOnError,
     ignoredLabelTypes,
     detailsOpen,
@@ -65,6 +69,8 @@ async function run(): Promise<void> {
       allowedIssueStatuses,
       validateProject,
       allowedProjects,
+      validateType,
+      allowedTypes,
       failOnError,
       ignoredLabelTypes,
       detailsOpen,
@@ -197,7 +203,15 @@ async function run(): Promise<void> {
         console.log('PR description will not be updated.');
       }
 
-      if (!Jira.isProjectValid(validateProject, allowedProjects, details)) {
+      if (!Jira.isIssueTypeValid(validateType allowedTypes, details)) {
+        const body = Jira.getInvalidIssueTypeComment(details.type.name, allowedTypes);
+	const invalidIssueTypeComment = { ...commonPayload, body };
+        console.log('Adding comment for invalid jira issue type');
+        await gh.upsertComment('invalid-issuetype', invalidIssueTypeComment);
+
+        // eslint-disable-next-line i18n-text/no-en
+        return exit('The found jira issue is not an acceptable type');
+      } else if (!Jira.isProjectValid(validateProject, allowedProjects, details)) {
         const body = Jira.getInvalidProjectComment(details.project.key, allowedProjects);
 	const invalidProjectComment = { ...commonPayload, body };
         console.log('Adding comment for invalid jira project');
