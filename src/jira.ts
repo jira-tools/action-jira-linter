@@ -118,13 +118,13 @@ export class Jira {
 ${body ?? ''}`;
   };
 
-  /** Get the comment body for pr with no JIRA id in the branch name. */
-  static getNoIdComment = (branch: string): string => {
-    return `A JIRA Issue ID is missing from your branch name! 🦄
+  /** Get the comment body for pr with no JIRA id. */
+  static getNoIdComment = (): string => {
+    return `A JIRA Issue ID is missing from your branch name or PR title! 🦄
 
-Your branch: \`${branch}\`
+Please either name your branch to contain a valid Jira ID, or include one in your PR title.
 
-If this is your first time contributing, refer to <a href="https://github.com/mskelton/action-jira-linter">action-jira-linter</a> to learn more about Jira linting.
+If this is your first time contributing, refer to <a href="https://github.com/reliancehealthinc/action-jira-linter">action-jira-linter</a> to learn more about Jira linting.
 
 Valid sample branch names:
 

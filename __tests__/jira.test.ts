@@ -87,8 +87,8 @@ describe('getPRDescription()', () => {
 });
 
 describe('getNoIdComment()', () => {
-  it('should return the comment content with the branch name', () => {
-    expect(Jira.getNoIdComment('test_new_feature')).toContain('test_new_feature');
+  it('should return the comment content', () => {
+    expect(Jira.getNoIdComment()).toContain('JIRA Issue ID is missing');
   });
 });
 

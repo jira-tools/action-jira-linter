@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import axios, { AxiosInstance } from 'axios';
 
 import {
   CreateIssueCommentParams,
@@ -231,14 +232,22 @@ async function run(): Promise<void> {
         console.log('The issue status is valid.');
       }
     } else {
-      const body = Jira.getNoIdComment(headBranch);
+      const body = Jira.getNoIdComment();
       const comment = { ...commonPayload, body };
       await gh.upsertComment('no-id', comment);
 
       // eslint-disable-next-line i18n-text/no-en
-      return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key.');
+      return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key in the name, or put a valid JIRA issue in the PR title.');
     }
   } catch (error) {
+    if (axios.isAxios(err) && err.response.status == 404) {
+      const body = Jira.getNoIdComment();
+      const comment = { ...commonPayload, body };
+      await gh.upsertComment('no-id', comment);
+
+      // eslint-disable-next-line i18n-text/no-en
+      return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key in the name, or put a valid JIRA issue in the PR title.');
+    }
     console.log({ error });
 
     core.setFailed((error as Error)?.message ?? 'FATAL: An unknown error occurred');
