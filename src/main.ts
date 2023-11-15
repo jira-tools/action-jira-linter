@@ -240,7 +240,7 @@ async function run(): Promise<void> {
       return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key in the name, or put a valid JIRA issue in the PR title.');
     }
   } catch (error) {
-    if (axios.isAxios(err) && err.response.status == 404) {
+    if (axios.isAxios(error) && error.response.status == 404) {
       const body = Jira.getNoIdComment();
       const comment = { ...commonPayload, body };
       await gh.upsertComment('no-id', comment);
