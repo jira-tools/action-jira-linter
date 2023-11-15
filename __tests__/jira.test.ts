@@ -30,7 +30,7 @@ describe('getJIRAIssueKeys()', () => {
     ]);
   });
 
-  it('gets jira key from different branch names', () => {
+  it('gets jira key from different branch names and PR titles', () => {
     expect(Jira.getJIRAIssueKeys('fix/login-protocol-es-43')).toEqual(['ES-43']);
     expect(Jira.getJIRAIssueKeys('fix/login-protocol-ES-43')).toEqual(['ES-43']);
     expect(Jira.getJIRAIssueKeys('feature/newFeature_esch-100')).toEqual(['ESCH-100']);
@@ -48,6 +48,9 @@ describe('getJIRAIssueKeys()', () => {
 
     expect(Jira.getJIRAIssueKeys('feature/missingKey')).toEqual([]);
     expect(Jira.getJIRAIssueKeys('')).toEqual([]);
+
+    expect(Jira.getJIRAIssueKeys('TEST-1234 This is a PR title example')).toEqual(['TEST-1234']);
+    expect(Jira.getJIRAIssueKeys('TEST-1234 This is a PR title example also referring to TEST-1555')).toEqual(['TEST-1234','TEST-1555']);
   });
 });
 
