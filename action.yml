@@ -36,6 +36,16 @@ inputs:
       Requires validate-issue-status to be set to true.
     required: false
     default: 'In Progress'
+  validate-project:
+    description: 'Set this to true if you want action-jira-linter to limit validation to jira issues in specific projects'
+    required: false
+    default: 'false'
+  allowed-projects:
+    description: |
+      A line-separated list of acceptable Jira project IDs. You must provide a value for this if validate-project is set to true
+      Requires validate-project to be set to true.
+    required: false
+    default: ''
   fail-on-error:
     description: 'Set this to true if you want action-jira-linter to fail the PR if it encounters an error'
     required: false

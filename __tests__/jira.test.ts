@@ -148,3 +148,38 @@ describe('getInvalidIssueStatusComment()', () => {
     expect(Jira.getInvalidIssueStatusComment('Assessment', ['In Progress'])).toContain('In Progress');
   });
 });
+
+describe('isProjectValid()', () => {
+  const issue: JIRADetails = {
+    key: 'ABC-123',
+    url: 'url',
+    type: { name: 'feature', icon: 'feature-icon-url' },
+    estimate: 1,
+    labels: [{ name: 'frontend', url: 'frontend-url' }],
+    summary: 'Story title or summary',
+    project: { name: 'project', url: 'project-url', key: 'abc' },
+    status: 'Assessment',
+  };
+
+  it('should return false if project validation was enabled but issue project is not in the approvedProjects', () => {
+    const expectedProjects = ['wrong', 'wrongproject'];
+    expect(Jira.isProjectValid(true, expectedProjects, issue)).toBeFalsy();
+  });
+
+  it('should return true if project validation was enabled and the issue project is in the approvedProjects', () => {
+    const expectedProjects = ['abc', 'anotherproject'];
+    expect(Jira.isProjectValid(true, expectedProjects, issue)).toBeTruthy();
+  });
+
+  it('should return true if issue status validation is not enabled', () => {
+    const expectedProjects = ['wrong', 'wrongproject'];
+    expect(Jira.isProjectValid(false, expectedProjects, issue)).toBeTruthy();
+  });
+});
+
+describe('getInvalidProjectComment()', () => {
+  it('should return content with the passed in issue project and allowed projects', () => {
+    expect(Jira.getInvalidProjectComment('TST', ['wrongproject'])).toContain('TST');
+    expect(Jira.getInvalidProjectComment('TST', ['wrongproject'])).toContain('wrongproject');
+  });
+});

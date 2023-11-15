@@ -27,6 +27,8 @@ const getInputs = (): JIRALintActionInputs => {
   const prThreshold = parseInt(core.getInput('pr-threshold', { required: false }), 10);
   const validateIssueStatus: boolean = core.getInput('validate-issue-status', { required: false }) === 'true';
   const allowedIssueStatuses: string[] = core.getMultilineInput('allowed-issue-statuses');
+  const validateProject: boolean = core.getInput('validate-project', { required: false }) === 'true';
+  const allowedProjects: string[] = core.getMultilineInput('allowed-projects');
   const failOnError: boolean = core.getInput('fail-on-error', { required: false }) !== 'false';
   const ignoredLabelTypes: string[] = core.getMultilineInput('ignored-label-types', { required: false });
   const detailsOpen: boolean = core.getInput('details-open', { required: false }) !== 'false';
@@ -41,6 +43,8 @@ const getInputs = (): JIRALintActionInputs => {
     jiraBaseURL: jiraBaseURL.endsWith('/') ? jiraBaseURL.replace(/\/$/, '') : jiraBaseURL,
     validateIssueStatus,
     allowedIssueStatuses,
+    validateProject,
+    allowedProjects,
     failOnError,
     ignoredLabelTypes,
     detailsOpen,
@@ -59,6 +63,8 @@ async function run(): Promise<void> {
       prThreshold,
       validateIssueStatus,
       allowedIssueStatuses,
+      validateProject,
+      allowedProjects,
       failOnError,
       ignoredLabelTypes,
       detailsOpen,
@@ -191,7 +197,15 @@ async function run(): Promise<void> {
         console.log('PR description will not be updated.');
       }
 
-      if (!Jira.isIssueStatusValid(validateIssueStatus, allowedIssueStatuses, details)) {
+      if (!Jira.isProjectValid(validateProject, allowedProjects, details)) {
+        const body = Jira.getInvalidProjectComment(details.project.key, allowedProjects);
+	const invalidProjectComment = { ...commonPayload, body };
+        console.log('Adding comment for invalid jira project');
+        await gh.upsertComment('invalid-project', invalidProjectComment);
+
+        // eslint-disable-next-line i18n-text/no-en
+        return exit('The found jira issue is not in an acceptable project');
+      } else if (!Jira.isIssueStatusValid(validateIssueStatus, allowedIssueStatuses, details)) {
         const body = Jira.getInvalidIssueStatusComment(details.status, allowedIssueStatuses);
         const invalidIssueStatusComment = { ...commonPayload, body };
         console.log('Adding comment for invalid issue status');

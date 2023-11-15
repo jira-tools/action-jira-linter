@@ -169,6 +169,43 @@ Valid sample branch names:
     `;
   };
 
-  /** Reverse a string. */
+  /** Check if jira project validation is enabled then compare the issue project with the allowed statuses. */
+  static isProjectValid = (
+    shouldValidate: boolean,
+    allowedProjects: string[],
+    details: JIRADetails
+  ): boolean => {
+    if (!shouldValidate) {
+      // eslint-disable-next-line i18n-text/no-en
+      core.info('Skipping Jira project validation as shouldValidate is false');
+      return true;
+    }
+
+    return allowedProjects.includes(details.project.key);
+  };
+  
+  /** Get the comment body for invalid project */
+  static getInvalidProjectComment = (issueProject: string, allowedProjects: string[]): string => {
+    const allowedProjectsString = allowedProjects.join(', ');
+
+    return `<p>:broken_heart: The detected issue is not in one of the allowed projects :broken_heart: </p>
+      <table>
+        <tr>
+            <th>Detected Project</th>
+            <td>${issueProject}</td>
+            <td>:x:</td>
+        </tr>
+        <tr>
+            <th>Allowed Projects</th>
+            <td>${allowedProjectsString}</td>
+            <td>:heavy_check_mark:</td>
+          </tr>
+      </table>
+      <p>Please ensure your jira ticket is created in the right project</p>
+    `;
+
+  };
+
+    /** Reverse a string. */
   private static reverseString = (input: string): string => input.split('').reverse().join('');
 }
