@@ -21,28 +21,35 @@ inputs:
   skip-comments:
     description: 'A boolean if set to true, will skip adding lint comments for PR title.'
     required: false
-    default: false
+    default: 'false'
   pr-threshold:
     description: 'An `Integer` based on which action-jira-linter add a comment discouraging huge PRs. Is disabled by `skip-comments`'
     required: false
-    default: 800
+    default: '800'
   validate-issue-status:
     description: 'Set this to true if you want action-jira-linter to validate the status of the detected jira issues'
     required: false
-    default: false
+    default: 'false'
   allowed-issue-statuses:
     description: |
       A line-separated list of acceptable Jira issue statuses. You must provide a value for this if validate-issue-status is set to true
       Requires validate-issue-status to be set to true.
     required: false
-    default: "In Progress"
+    default: 'In Progress'
   fail-on-error:
     description: 'Set this to true if you want action-jira-linter to fail the PR if it encounters an error'
     required: false
-    default: true
+    default: 'true'
+  ignored-label-types:
+    description: 'A list of label types to ignore.'
+    required: false
+  details-open:
+    description: 'Open the ticket details table by default'
+    required: false
+    default: 'true'
 
 runs:
-  using: 'node12'
+  using: node20
   main: 'lib/index.js'
 branding:
   icon: 'check-square'

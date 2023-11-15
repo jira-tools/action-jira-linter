@@ -28,6 +28,8 @@ const getInputs = (): JIRALintActionInputs => {
   const validateIssueStatus: boolean = core.getInput('validate-issue-status', { required: false }) === 'true';
   const allowedIssueStatuses: string[] = core.getMultilineInput('allowed-issue-statuses');
   const failOnError: boolean = core.getInput('fail-on-error', { required: false }) !== 'false';
+  const ignoredLabelTypes: string[] = core.getMultilineInput('ignored-label-types', { required: false });
+  const detailsOpen: boolean = core.getInput('details-open', { required: false }) !== 'false';
 
   return {
     jiraUser,
@@ -40,6 +42,8 @@ const getInputs = (): JIRALintActionInputs => {
     validateIssueStatus,
     allowedIssueStatuses,
     failOnError,
+    ignoredLabelTypes,
+    detailsOpen,
   };
 };
 
@@ -56,6 +60,8 @@ async function run(): Promise<void> {
       validateIssueStatus,
       allowedIssueStatuses,
       failOnError,
+      ignoredLabelTypes,
+      detailsOpen,
     } = getInputs();
 
     const exit = (message: string): void => {
@@ -113,7 +119,7 @@ async function run(): Promise<void> {
         ...commonPayload,
         body: commentBody,
       };
-      await gh.addComment(comment);
+      await gh.upsertComment('unable-to-determine-base-branch', comment);
 
       // eslint-disable-next-line i18n-text/no-en
       return exit('Unable to get the head and base branch.');
@@ -130,7 +136,7 @@ async function run(): Promise<void> {
     if (!issueKeys.length) {
       const body = Jira.getNoIdComment(headBranch);
       const comment = { ...commonPayload, body };
-      await gh.addComment(comment);
+      await gh.upsertComment('no-id', comment);
 
       return exit('JIRA issue id is missing in your branch.');
     }
@@ -144,7 +150,11 @@ async function run(): Promise<void> {
       const podLabel: string = details?.project?.name || '';
       const hotfixLabel: string = GitHub.getHotfixLabel(baseBranch);
       const typeLabel: string = details?.type?.name || '';
-      const labels: string[] = [podLabel, hotfixLabel, typeLabel].filter((l) => l != null && l.length > 0);
+      const labels: string[] = [
+        ignoredLabelTypes.includes('project') ? null : podLabel,
+        ignoredLabelTypes.includes('hotfix') ? null : hotfixLabel,
+        ignoredLabelTypes.includes('type') ? null : typeLabel,
+      ].filter(Boolean as unknown as (x: string | null) => x is string);
       console.log('Adding lables -> ', labels);
 
       await gh.addLabels({ ...commonPayload, labels });
@@ -152,7 +162,7 @@ async function run(): Promise<void> {
       if (GitHub.shouldUpdatePRDescription(prBody)) {
         console.log('Updating PR description…', prBody);
 
-        const description: string = Jira.getPRDescription(prBody, details);
+        const description: string = Jira.getPRDescription(prBody, details, detailsOpen);
 
         const prData: PullRequestUpdateParams = {
           owner,
@@ -167,14 +177,14 @@ async function run(): Promise<void> {
           const prTitleCommentBody = gh.getPRTitleComment(details.summary, title);
           const prTitleComment = { ...commonPayload, body: prTitleCommentBody };
           console.log('Adding comment for the PR title');
-          gh.addComment(prTitleComment);
+          gh.upsertComment('pr-title', prTitleComment);
 
           // add a comment if the PR is huge
           if (GitHub.isHumongousPR(additions, threshold)) {
             const hugePrCommentBody = GitHub.getHugePrComment(additions, threshold);
             const hugePrComment = { ...commonPayload, body: hugePrCommentBody };
             console.log('Adding comment for huge PR');
-            gh.addComment(hugePrComment);
+            gh.upsertComment('huge-pr', hugePrComment);
           }
         }
       } else {
@@ -185,7 +195,7 @@ async function run(): Promise<void> {
         const body = Jira.getInvalidIssueStatusComment(details.status, allowedIssueStatuses);
         const invalidIssueStatusComment = { ...commonPayload, body };
         console.log('Adding comment for invalid issue status');
-        await gh.addComment(invalidIssueStatusComment);
+        await gh.upsertComment('invalid-issue-status', invalidIssueStatusComment);
 
         // eslint-disable-next-line i18n-text/no-en
         return exit('The found jira issue does is not in acceptable statuses');
@@ -195,7 +205,7 @@ async function run(): Promise<void> {
     } else {
       const body = Jira.getNoIdComment(headBranch);
       const comment = { ...commonPayload, body };
-      await gh.addComment(comment);
+      await gh.upsertComment('no-id', comment);
 
       // eslint-disable-next-line i18n-text/no-en
       return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key.');
