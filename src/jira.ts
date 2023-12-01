@@ -170,11 +170,7 @@ Valid sample branch names:
   };
 
   /** Check if jira project validation is enabled then compare the issue project with the allowed statuses. */
-  static isProjectValid = (
-    shouldValidate: boolean,
-    allowedProjects: string[],
-    details: JIRADetails
-  ): boolean => {
+  static isProjectValid = (shouldValidate: boolean, allowedProjects: string[], details: JIRADetails): boolean => {
     if (!shouldValidate) {
       // eslint-disable-next-line i18n-text/no-en
       core.info('Skipping Jira project validation as shouldValidate is false');
@@ -183,7 +179,7 @@ Valid sample branch names:
 
     return allowedProjects.includes(details.project.key);
   };
-  
+
   /** Get the comment body for invalid project */
   static getInvalidProjectComment = (issueProject: string, allowedProjects: string[]): string => {
     const allowedProjectsString = allowedProjects.join(', ');
@@ -203,15 +199,10 @@ Valid sample branch names:
       </table>
       <p>Please ensure your jira ticket is created in the right project</p>
     `;
-
   };
 
   /** Check if jira type validation is enabled then compare the issue type with the allowed types. */
-  static isIssueTypeValid = (
-    shouldValidate: boolean,
-    allowedTypes: string[],
-    details: JIRADetails
-  ): boolean => {
+  static isIssueTypeValid = (shouldValidate: boolean, allowedTypes: string[], details: JIRADetails): boolean => {
     if (!shouldValidate) {
       // eslint-disable-next-line i18n-text/no-en
       core.info('Skipping Jira issue type validation as shouldValidate is false');
@@ -220,7 +211,7 @@ Valid sample branch names:
 
     return allowedTypes.includes(details.type.name);
   };
-  
+
   /** Get the comment body for invalid issue type */
   static getInvalidIssueTypeComment = (issueType: string, allowedTypes: string[]): string => {
     const allowedTypesString = allowedTypes.join(', ');
@@ -240,9 +231,8 @@ Valid sample branch names:
       </table>
       <p>Please ensure your jira ticket is created as the right type.</p>
     `;
-
   };
 
-    /** Reverse a string. */
+  /** Reverse a string. */
   private static reverseString = (input: string): string => input.split('').reverse().join('');
 }

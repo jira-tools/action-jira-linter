@@ -50,7 +50,10 @@ describe('getJIRAIssueKeys()', () => {
     expect(Jira.getJIRAIssueKeys('')).toEqual([]);
 
     expect(Jira.getJIRAIssueKeys('TEST-1234 This is a PR title example')).toEqual(['TEST-1234']);
-    expect(Jira.getJIRAIssueKeys('TEST-1234 This is a PR title example also referring to TEST-1555')).toEqual(['TEST-1234','TEST-1555']);
+    expect(Jira.getJIRAIssueKeys('TEST-1234 This is a PR title example also referring to TEST-1555')).toEqual([
+      'TEST-1234',
+      'TEST-1555',
+    ]);
   });
 });
 

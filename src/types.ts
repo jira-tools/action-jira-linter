@@ -148,6 +148,10 @@ export interface JIRALintActionInputs {
   prThreshold: number;
   validateIssueStatus: boolean;
   allowedIssueStatuses: string[];
+  validateProject: boolean;
+  allowedProjects: string[];
+  validateType: boolean;
+  allowedTypes: string[];
   failOnError: boolean;
   ignoredLabelTypes: string[];
   detailsOpen: boolean;

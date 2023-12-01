@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import axios, { AxiosInstance } from 'axios';
+import { AxiosError } from 'axios';
 
 import {
   CreateIssueCommentParams,
@@ -147,19 +147,20 @@ async function run(): Promise<void> {
 
     const issueKeys = Jira.getJIRAIssueKeys(headBranch).concat(Jira.getJIRAIssueKeys(title));
     if (!issueKeys.length) {
-      const body = Jira.getNoIdComment(headBranch);
+      const body = Jira.getNoIdComment();
       const comment = { ...commonPayload, body };
       await gh.upsertComment('no-id', comment);
 
-      return exit('JIRA issue id is missing in your branch.');
+      return exit('JIRA issue id is missing in your branch or PR title.');
     }
 
     // use the last match (end of the branch name)
     const issueKey = issueKeys[issueKeys.length - 1];
     console.log(`JIRA key -> ${issueKey}`);
 
-    const details: JIRADetails = await jira.getTicketDetails(issueKey);
-    if (details.key) {
+    try {
+      const details: JIRADetails = await jira.getTicketDetails(issueKey);
+
       const podLabel: string = details?.project?.name || '';
       const hotfixLabel: string = GitHub.getHotfixLabel(baseBranch);
       const typeLabel: string = details?.type?.name || '';
@@ -204,9 +205,9 @@ async function run(): Promise<void> {
         console.log('PR description will not be updated.');
       }
 
-      if (!Jira.isIssueTypeValid(validateType allowedTypes, details)) {
+      if (!Jira.isIssueTypeValid(validateType, allowedTypes, details)) {
         const body = Jira.getInvalidIssueTypeComment(details.type.name, allowedTypes);
-	const invalidIssueTypeComment = { ...commonPayload, body };
+        const invalidIssueTypeComment = { ...commonPayload, body };
         console.log('Adding comment for invalid jira issue type');
         await gh.upsertComment('invalid-issuetype', invalidIssueTypeComment);
 
@@ -214,7 +215,7 @@ async function run(): Promise<void> {
         return exit('The found jira issue is not an acceptable type');
       } else if (!Jira.isProjectValid(validateProject, allowedProjects, details)) {
         const body = Jira.getInvalidProjectComment(details.project.key, allowedProjects);
-	const invalidProjectComment = { ...commonPayload, body };
+        const invalidProjectComment = { ...commonPayload, body };
         console.log('Adding comment for invalid jira project');
         await gh.upsertComment('invalid-project', invalidProjectComment);
 
@@ -231,23 +232,25 @@ async function run(): Promise<void> {
       } else {
         console.log('The issue status is valid.');
       }
-    } else {
-      const body = Jira.getNoIdComment();
-      const comment = { ...commonPayload, body };
-      await gh.upsertComment('no-id', comment);
+    } catch (e) {
+      // 404 is a valid way to say "Jira Ticket Not Found"
+      if (e instanceof AxiosError) {
+        const err = e as AxiosError;
+        if (err.response && err.response.status && err.response.status === 404) {
+          const body = Jira.getNoIdComment();
+          const comment = { ...commonPayload, body };
+          await gh.upsertComment('no-id', comment);
 
-      // eslint-disable-next-line i18n-text/no-en
-      return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key in the name, or put a valid JIRA issue in the PR title.');
+          return exit(
+            // eslint-disable-next-line i18n-text/no-en
+            'Invalid JIRA key. Please create a branch with a valid JIRA issue key in the name, or put a valid JIRA issue in the PR title.'
+          );
+        } else {
+          throw e;
+        }
+      }
     }
   } catch (error) {
-    if (axios.isAxios(error) && error.response.status == 404) {
-      const body = Jira.getNoIdComment();
-      const comment = { ...commonPayload, body };
-      await gh.upsertComment('no-id', comment);
-
-      // eslint-disable-next-line i18n-text/no-en
-      return exit('Invalid JIRA key. Please create a branch with a valid JIRA issue key in the name, or put a valid JIRA issue in the PR title.');
-    }
     console.log({ error });
 
     core.setFailed((error as Error)?.message ?? 'FATAL: An unknown error occurred');
