@@ -30,7 +30,7 @@ export class GitHub {
         cleanLabels.push(label.replace(/[^a-zA-Z0-9 ]/g, ''));
       }
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      await this.client.issues.addLabels({ owner, repo, issue_number, cleanLabels });
+      await this.client.issues.addLabels({ owner, repo, issue_number, labels: cleanLabels });
     } catch (error) {
       console.error(error);
       // eslint-disable-next-line i18n-text/no-en
