@@ -25,8 +25,12 @@ export class GitHub {
     try {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       const { owner, repo, issue: issue_number, labels } = labelData;
+      const cleanLabels: string[] = [];
+      for (const label of labels) {
+        cleanLabels.push(label.replace(/[^a-zA-Z0-9 ]/g, ''));
+      }
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      await this.client.issues.addLabels({ owner, repo, issue_number, labels });
+      await this.client.issues.addLabels({ owner, repo, issue_number, cleanLabels });
     } catch (error) {
       console.error(error);
       // eslint-disable-next-line i18n-text/no-en
