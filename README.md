@@ -32,6 +32,8 @@
 
 <!-- tocstop -->
 
+## Owning Team: @reliancehealthinc/devops - DevOps/ServiceOps
+
 ## Installation
 
 To make `action-jira-linter` a part of your workflow, just add a
